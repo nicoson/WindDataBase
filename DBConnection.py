@@ -8,9 +8,12 @@ class DBConnect:
 		self.user		= user
 		self.psd		= psd
 		self.database	= database
+		self.logTable	= 'updateLog'
 		self.db = pymysql.connect(server, user, psd, database)
 		# 使用 cursor() 方法创建一个游标对象 cursor
 		self.cursor = self.db.cursor()
+		# create log table for update history
+		self.createUpdateLogTable()
 
 	def createSingleTable(self, symbol):
 		symbol = symbol.encode("utf-8")
@@ -70,7 +73,12 @@ class DBConnect:
 			updated_date datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新日期'
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8"""
 		
-		self.cursor.execute(sql)
+		try:
+			self.cursor.execute(sql)
+		except Exception as e:
+			print e
+		
+		self.updateLogTable(symbol)
 
 
 	def createTables(self, symbols):
@@ -79,10 +87,19 @@ class DBConnect:
 	
 
 	def createUpdateLogTable(self):
-		sql = """CREATE TABLE IF NOT EXISTS updateLog (
-			stock_code varchar(10) NULL UNIQUE KEY COMMENT '股票代码',
+		sql = "CREATE TABLE IF NOT EXISTS " + self.logTable + """ (
+			stock_code varchar(10) NOT NULL UNIQUE KEY COMMENT '股票代码',
 			last_modified datetime NOT NULL DEFAULT '1990-01-01' COMMENT '最后同步日期'
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8"""
+
+		self.cursor.execute(sql)
+
+
+	def updateLogTable(self, symbol, lastModified = "1990-01-01"):
+		print "=========> " + symbol
+		sql = "INSERT INTO " + self.logTable + " VALUES('" + symbol + "', '" + lastModified \
+			+ "') ON DUPLICATE KEY UPDATE stock_code='" + symbol \
+			+ "', last_modified='" + lastModified + "'"
 
 		self.cursor.execute(sql)
 
