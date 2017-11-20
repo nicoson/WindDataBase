@@ -16,10 +16,10 @@ class DBConnect:
 		self.createUpdateLogTable()
 
 	def createSingleTable(self, symbol):
-		symbol = symbol.encode("utf-8")
-		symbol = symbol.split(".")
+		symbol = symbol
+		symbol = symbol.split('.')
 		symbol.reverse()
-		symbol = ''.join(symbol)
+		symbol = "".join(symbol)
 		# 使用预处理语句创建表
 		sql = "CREATE TABLE IF NOT EXISTS " + symbol + """ (
 			ID bigint(20) primary key NOT NULL auto_increment,
@@ -74,11 +74,12 @@ class DBConnect:
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8"""
 		
 		try:
-			self.cursor.execute(sql)
+			# print(sql)
+			self.cursor.execute(sql.encode())
+			self.updateLogTable(symbol)
 		except Exception as e:
-			print(e)
+			print(func.__name__ + "  ============>  " + e)
 		
-		self.updateLogTable(symbol)
 
 
 	def createTables(self, symbols):
@@ -92,7 +93,7 @@ class DBConnect:
 			last_modified datetime NOT NULL DEFAULT '1990-01-01' COMMENT '最后同步日期'
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8"""
 
-		self.cursor.execute(sql)
+		self.cursor.execute(sql.encode())
 
 
 	def updateLogTable(self, symbol, lastModified = "1990-01-01"):
@@ -101,7 +102,8 @@ class DBConnect:
 			+ "') ON DUPLICATE KEY UPDATE stock_code='" + symbol \
 			+ "', last_modified='" + lastModified + "'"
 
-		self.cursor.execute(sql)
+		print(sql)
+		self.cursor.execute(sql.encode())
 
 
 	def destroy(self):
