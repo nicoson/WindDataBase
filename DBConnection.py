@@ -76,7 +76,7 @@ class DBConnect:
 		try:
 			self.cursor.execute(sql)
 		except Exception as e:
-			print e
+			print(e)
 		
 		self.updateLogTable(symbol)
 
@@ -96,7 +96,7 @@ class DBConnect:
 
 
 	def updateLogTable(self, symbol, lastModified = "1990-01-01"):
-		print "=========> " + symbol
+		print("=========> " + symbol)
 		sql = "INSERT INTO " + self.logTable + " VALUES('" + symbol + "', '" + lastModified \
 			+ "') ON DUPLICATE KEY UPDATE stock_code='" + symbol \
 			+ "', last_modified='" + lastModified + "'"
