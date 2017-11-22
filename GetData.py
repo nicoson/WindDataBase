@@ -43,7 +43,7 @@ class WindStock():
             index_data=pd.DataFrame()  
             index_data['trade_date']=stock.Times  
             stock.Data[0]=symbol  
-            index_data['stock_code']=stock.Data[0]  
+            # index_data['stock_code']=stock.Data[0]  
             #index_data['stock_code'] =symbol  
             index_data['open']=stock.Data[1]  
             index_data['high']=stock.Data[2]  

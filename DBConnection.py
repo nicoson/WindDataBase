@@ -9,7 +9,7 @@ class DBConnect:
 		self.psd		= psd
 		self.database	= database
 		self.logTable	= 'updateLog'
-		self.db = pymysql.connect(server, user, psd, database)
+		self.db = pymysql.connect(server, user, psd, database, charset='utf8mb4')
 		# 使用 cursor() 方法创建一个游标对象 cursor
 		self.cursor = self.db.cursor()
 		# create log table for update history
@@ -24,7 +24,6 @@ class DBConnect:
 		sql = "CREATE TABLE IF NOT EXISTS " + symbol + """ (
 			ID bigint(20) primary key NOT NULL auto_increment,
 			trade_date date NULL COMMENT '交易日期',
-			stock_code varchar(100) NULL COMMENT '股票代码',
 			open double DEFAULT NULL COMMENT '开盘价',
 			high double DEFAULT NULL COMMENT '最高价',
 			low double DEFAULT NULL COMMENT '最低价',
@@ -75,11 +74,13 @@ class DBConnect:
 		
 		try:
 			# print(sql)
-			self.cursor.execute(sql.encode())
-			self.updateLogTable(symbol)
+			self.cursor.execute(sql)
+			self.db.commit()
 		except Exception as e:
 			print(func.__name__ + "  ============>  " + e)
+			return
 		
+		self.updateLogTable(symbol)
 
 
 	def createTables(self, symbols):
@@ -93,7 +94,8 @@ class DBConnect:
 			last_modified datetime NOT NULL DEFAULT '1990-01-01' COMMENT '最后同步日期'
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8"""
 
-		self.cursor.execute(sql.encode())
+		self.cursor.execute(sql)
+		self.db.commit()
 
 
 	def updateLogTable(self, symbol, lastModified = "1990-01-01"):
@@ -103,8 +105,14 @@ class DBConnect:
 			+ "', last_modified='" + lastModified + "'"
 
 		print(sql)
-		self.cursor.execute(sql.encode())
+		self.cursor.execute(sql)
+		self.db.commit()
 
 
 	def destroy(self):
+		self.cursor.close()
 		self.db.close()
+
+
+	def restructData(data):
+		return
