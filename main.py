@@ -29,7 +29,7 @@ def main():
 
             if data != None:
                 print(currentTime(), "===========> Inserting Data into DB for ", symbol, ": ")
-                db.insertData(data)
+                db.insertData(symbol, data)
             else:
                 print(symbol, " has no new data")
         else:

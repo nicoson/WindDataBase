@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 import pymysql
+import datetime,time
 
 class DBConnect:
 	def __init__(self, server, user, psd, database):
@@ -77,7 +78,7 @@ class DBConnect:
 			self.cursor.execute(sql)
 			self.db.commit()
 		except Exception as e:
-			print(func.__name__ + "  ============>  " + e)
+			print("  ============>  " + e)
 			return
 		
 		sql = "SELECT last_modified FROM updatelog WHERE stock_code='" + symbol +"' limit 1"
@@ -131,9 +132,12 @@ class DBConnect:
 			print(e)
 			return None
 
-	def insertData(self, data):
+
+	def insertData(self, symbol, data):
+		data[21] = list(map(str, data[21]))
+		data[20] = list(map(str, data[20]))
 		data = list(tuple(i) for i in zip(*data))
-		
+
 		index = len(data)
 		for i in range(len(data)):
 			if data[i][0] != None:
@@ -142,5 +146,26 @@ class DBConnect:
 
 		sli = slice(index, 99999999999)
 		data = data[sli]
+		
+		if len(data) == 0:
+			print("no valid data")
+			return
+
 		data = list(map(str, data))
-		print(data)
+
+		sql = ','.join(data)
+		sql = "INSERT INTO `" + symbol + """` (open,high,low,close,pre_close,volume,amt,dealnum,
+		chg,pct_chg,vwap,close2,turn,free_turn,oi,oi_chg,pre_settle,settle,chg_settlement,
+		pct_chg_settlement, lastradeday_s,last_trade_day,rel_ipo_chg,rel_ipo_pct_chg,susp_reason,close3, 
+		pe_ttm,val_pe_deducted_ttm,pe_lyr,pb_lf,ps_ttm,ps_lyr,dividendyield2,ev,mkt_cap_ard,pb_mrq,
+		pcf_ocf_ttm,pcf_ncf_ttm,pcf_ocflyr,trade_status) VALUES""" + sql
+		sql = sql.replace('None', 'null')
+
+		try:
+			self.cursor.execute(sql)
+			self.db.commit()
+			self.updateLogTable(symbol, datetime.datetime.now().strftime("%Y-%m-%d"))
+		except Exception as e:
+			print("XXXXXXXXXXXXX	insertData issue for stock: ", symbol)
+
+		print(sql)
