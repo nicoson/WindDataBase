@@ -11,8 +11,8 @@ def currentTime():
 def main():
     ws = WindStock()
     # get category list
-    # symbols = ws.getAStockCodesWind()
-    symbols = ['000001.SZ','000003.SZ','600001.SH']
+    symbols = ws.getAStockCodesWind()
+    # symbols = ['000001.SZ','000003.SZ','600001.SH']
 
     # create tables for new category
     db = DBConnect("localhost","root","root","astock")

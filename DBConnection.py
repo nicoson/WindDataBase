@@ -104,7 +104,7 @@ class DBConnect:
 		self.db.commit()
 
 
-	def updateLogTable(self, symbol, lastModified = "2017-01-01"):
+	def updateLogTable(self, symbol, lastModified = "1990-01-01"):
 		print("=========> " + symbol)
 		sql = "INSERT INTO " + self.logTable + " VALUES('" + symbol + "', '" + lastModified \
 			+ "') ON DUPLICATE KEY UPDATE stock_code='" + symbol \
