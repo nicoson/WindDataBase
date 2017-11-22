@@ -16,12 +16,12 @@ class DBConnect:
 		self.createUpdateLogTable()
 
 	def createSingleTable(self, symbol):
-		symbol = symbol
-		symbol = symbol.split('.')
-		symbol.reverse()
-		symbol = "".join(symbol)
+		# symbol = symbol
+		# symbol = symbol.split('.')
+		# symbol.reverse()
+		# symbol = "".join(symbol)
 		# 使用预处理语句创建表
-		sql = "CREATE TABLE IF NOT EXISTS " + symbol + """ (
+		sql = "CREATE TABLE IF NOT EXISTS `" + symbol + """` (
 			ID bigint(20) primary key NOT NULL auto_increment,
 			trade_date date NULL COMMENT '交易日期',
 			open double DEFAULT NULL COMMENT '开盘价',
@@ -80,7 +80,12 @@ class DBConnect:
 			print(func.__name__ + "  ============>  " + e)
 			return
 		
-		self.updateLogTable(symbol)
+		sql = "SELECT last_modified FROM updatelog WHERE stock_code='" + symbol +"' limit 1"
+		self.cursor.execute(sql)
+		result = self.cursor.fetchone()
+		print(result)
+		if result == None:
+			self.updateLogTable(symbol)
 
 
 	def createTables(self, symbols):
@@ -98,7 +103,7 @@ class DBConnect:
 		self.db.commit()
 
 
-	def updateLogTable(self, symbol, lastModified = "1990-01-01"):
+	def updateLogTable(self, symbol, lastModified = "2017-01-01"):
 		print("=========> " + symbol)
 		sql = "INSERT INTO " + self.logTable + " VALUES('" + symbol + "', '" + lastModified \
 			+ "') ON DUPLICATE KEY UPDATE stock_code='" + symbol \
@@ -114,5 +119,28 @@ class DBConnect:
 		self.db.close()
 
 
-	def restructData(data):
-		return
+	def getStockUpdateDate(self, symbol):
+		sql = "SELECT last_modified FROM updatelog WHERE stock_code='" + symbol +"' limit 1"
+		# print(sql)
+		try:
+			self.cursor.execute(sql)
+			result = self.cursor.fetchone()
+			return result
+		except Exception as e:
+			print("XXXXXXXXXXXXX	getStockUpdateDate issue for stock: ", symbol)
+			print(e)
+			return None
+
+	def insertData(self, data):
+		data = list(tuple(i) for i in zip(*data))
+		
+		index = len(data)
+		for i in range(len(data)):
+			if data[i][0] != None:
+				index = i
+				break
+
+		sli = slice(index, 99999999999)
+		data = data[sli]
+		data = list(map(str, data))
+		print(data)
