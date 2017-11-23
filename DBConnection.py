@@ -84,7 +84,7 @@ class DBConnect:
 		sql = "SELECT last_modified FROM updatelog WHERE stock_code='" + symbol +"' limit 1"
 		self.cursor.execute(sql)
 		result = self.cursor.fetchone()
-		print(result)
+		# print(result)
 		if result == None:
 			self.updateLogTable(symbol)
 

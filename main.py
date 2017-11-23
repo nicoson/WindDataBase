@@ -33,7 +33,7 @@ def main():
             else:
                 print(symbol, " has no new data")
         else:
-            print(symbol, " does not EXIST")
+            print(symbol, " does not EXIST or already updated today")
 
     # job finished, close the db connection
     db.destroy()

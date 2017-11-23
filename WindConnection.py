@@ -19,6 +19,7 @@ class WindStock:
         #stockCodes=w.wset("sectorconstituent","date="+end_date+";sectorid=a001010100000000;field=wind_code")
         #不加日期参数取最新股票代码
         stockCodes = w.wset("sectorconstituent","sectorid=a001010100000000;field=wind_code")
+        # futureCodes = w.wset("sectorconstituent","sector=全部期货连续合约;field=wind_code")
         return stockCodes.Data[0]
         #return stockCodes
 
@@ -30,7 +31,10 @@ class WindStock:
                 lastradeday_s,last_trade_day,rel_ipo_chg,rel_ipo_pct_chg,susp_reason,close3, pe_ttm,
                 val_pe_deducted_ttm,pe_lyr,pb_lf,ps_ttm,ps_lyr,dividendyield2,ev,mkt_cap_ard,pb_mrq,
                 pcf_ocf_ttm,pcf_ncf_ttm,pcf_ocflyr,trade_status""", start_date, (datetime.datetime.today()-datetime.timedelta(1)).strftime("%Y-%m-%d"))
-            return(stock.Data)
+            if stock.ErrorCode == 0:
+                return(stock.Data)
+            else:
+                return None
 
         except Exception as e:
             print ( "XXXXXXXXXXXXXXXXXXXX    ", symbol )
