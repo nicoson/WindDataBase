@@ -110,7 +110,7 @@ class DBConnect:
 			+ "') ON DUPLICATE KEY UPDATE stock_code='" + symbol \
 			+ "', last_modified='" + lastModified + "'"
 
-		print(sql)
+		# print(sql)
 		self.cursor.execute(sql)
 		self.db.commit()
 
@@ -168,4 +168,4 @@ class DBConnect:
 		except Exception as e:
 			print("XXXXXXXXXXXXX	insertData issue for stock: ", symbol)
 
-		print(sql)
+		# print(sql)
