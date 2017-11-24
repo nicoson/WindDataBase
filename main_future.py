@@ -12,7 +12,7 @@ def main():
     ws = WindStock()
     # get category list
     symbols = ws.getFutureCodesWind()
-    symbols = symbols[0:3]
+    # symbols = symbols[0:3]    # test case
 
     # create tables for new category
     db = DBConnect("localhost","root","root","future")
@@ -30,6 +30,7 @@ def main():
             if data != None:
                 print(currentTime(), "===========> Inserting Data into DB for ", symbol, ": ")
                 db.insertData(symbol, data)
+                print("Data insert complete successfully!")
             else:
                 print(symbol, " has no new data")
         else:
