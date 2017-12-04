@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 from WindPy import *
-import datetime,time
+import datetime,time,re
 
 class WindStock:
     def getCurrentTime(self):
@@ -26,10 +26,16 @@ class WindStock:
     def getFutureCodesWind(end_date = time.strftime('%Y%m%d',time.localtime(time.time()))):
         w.start()
         futureCodes = w.wset("sectorconstituent","sector=全部期货连续合约;field=wind_code")
-        return futureCodes.Data[0]
+        futureCodes = futureCodes.Data[0]
+        mainCode = list(map(self.getMainCode, futureCodes));
+        return mainCode
+
+    def getMainCode(code):
+        res, num = re.subn('\d','',code)
+        return res
 
     def getAStockData(self, symbol, start_date):
-        w.start()  
+        w.start()
         try:
             stock = w.wsd(symbol, """open,high,low,close,pre_close,volume,amt,dealnum,chg,pct_chg,
                 vwap,close2,turn,free_turn,oi,oi_chg,pre_settle,settle,chg_settlement,pct_chg_settlement, 
@@ -45,4 +51,3 @@ class WindStock:
             print ( "XXXXXXXXXXXXXXXXXXXX    ", symbol )
             print ( "XXXXXXXXXXXXXXXXXXXX    ", datetime.datetime.now().strftime("%Y-%m-%d-%H"), ": SQL Exception :%s" % (e) )
             return None
-       

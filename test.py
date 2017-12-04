@@ -11,32 +11,8 @@ def currentTime():
 def main():
     ws = WindStock()
     # get category list
-    symbols = ws.getAStockCodesWind()
-    symbols = [symbols[0]]
-
-    # create tables for new category
-    db = DBConnect("localhost","root","root","astock")
-    db.createTables(symbols)
-
-    # update database by using [updatelog] table
-    print(currentTime(),": Download A Stock Starting:")
-    for symbol in symbols:
-        start_date = db.getStockUpdateDate(symbol)
-        print(currentTime(), "===========> Downloading for ", symbol, ": ")
-        print("last update date: ", start_date[0].strftime("%Y-%m-%d"))
-        if start_date != None:
-            data = ws.getAStockData(symbol, start_date[0].strftime("%Y-%m-%d"))
-
-            if data != None:
-                print(currentTime(), "===========> Inserting Data into DB for ", symbol, ": ")
-                db.insertData(symbol, data)
-            else:
-                print(symbol, " has no new data")
-        else:
-            print(symbol, " does not EXIST")
-
-    # job finished, close the db connection
-    db.destroy()
+    symbols = ws.getFutureCodesWind()
+    print(symbols)
 
 if __name__ == "__main__":
     main()
