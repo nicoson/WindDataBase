@@ -23,7 +23,7 @@ class WindStock:
         return stockCodes.Data[0]
         #return stockCodes
 
-    def getFutureCodesWind(end_date = time.strftime('%Y%m%d',time.localtime(time.time()))):
+    def getFutureCodesWind(self, end_date = time.strftime('%Y%m%d',time.localtime(time.time()))):
         w.start()
         futureCodes = w.wset("sectorconstituent","sector=全部期货连续合约;field=wind_code")
         futureCodes = futureCodes.Data[0]
