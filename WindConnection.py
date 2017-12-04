@@ -30,7 +30,7 @@ class WindStock:
         mainCode = list(map(self.getMainCode, futureCodes));
         return mainCode
 
-    def getMainCode(code):
+    def getMainCode(self, code):
         res, num = re.subn('\d','',code)
         return res
 
