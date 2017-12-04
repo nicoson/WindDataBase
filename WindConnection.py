@@ -27,7 +27,7 @@ class WindStock:
         w.start()
         futureCodes = w.wset("sectorconstituent","sector=全部期货连续合约;field=wind_code")
         futureCodes = futureCodes.Data[0]
-        mainCode = list(map(self.getMainCode, futureCodes));
+        mainCode = list(set(list(map(self.getMainCode, futureCodes))));
         return mainCode
 
     def getMainCode(self, code):
