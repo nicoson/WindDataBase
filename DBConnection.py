@@ -68,6 +68,9 @@ class DBConnect:
 			rel_ipo_pct_chg double DEFAULT NULL COMMENT ' 相对发行价涨跌幅=[(指定交易日收盘价-首发价格)／首发价格]*100% 注：复权计算方法参见“日行情／收盘价”',
 			susp_reason varchar(200) DEFAULT NULL COMMENT '证券于某交易日停牌的原因。',
 			close3 double DEFAULT NULL COMMENT '指定交易日的收盘价，若无成交则返回为空。',
+			contractmultiplier double DEFAULT NULL COMMENT '合约乘数',
+			changelt double DEFAULT NULL COMMENT '涨跌幅限制',
+			mfprice double DEFAULT NULL COMMENT '最小变动价位', 
 			data_source varchar(100) NOT NULL DEFAULT 'Wind' COMMENT '数据来源',
 			created_date datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建日期',
 			updated_date datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新日期'
@@ -134,6 +137,7 @@ class DBConnect:
 
 
 	def insertData(self, symbol, data):
+		# handle date value
 		data[21] = list(map(str, data[21]))
 		data[20] = list(map(str, data[20]))
 		data = list(tuple(i) for i in zip(*data))
@@ -156,8 +160,9 @@ class DBConnect:
 		sql = ','.join(data)
 		sql = "INSERT INTO `" + symbol + """` (open,high,low,close,pre_close,volume,amt,dealnum,
 		chg,pct_chg,vwap,close2,turn,free_turn,oi,oi_chg,pre_settle,settle,chg_settlement,
-		pct_chg_settlement, lastradeday_s,last_trade_day,rel_ipo_chg,rel_ipo_pct_chg,susp_reason,close3, 
-		pe_ttm,val_pe_deducted_ttm,pe_lyr,pb_lf,ps_ttm,ps_lyr,dividendyield2,ev,mkt_cap_ard,pb_mrq,
+		pct_chg_settlement, lastradeday_s,last_trade_day,rel_ipo_chg,rel_ipo_pct_chg,susp_reason,
+		close3,contractmultiplier,changelt,mfprice,pe_ttm,val_pe_deducted_ttm,pe_lyr,pb_lf,ps_ttm,
+		ps_lyr,dividendyield2,ev,mkt_cap_ard,pb_mrq,
 		pcf_ocf_ttm,pcf_ncf_ttm,pcf_ocflyr,trade_status) VALUES""" + sql
 		sql = sql.replace('None', 'null')
 
