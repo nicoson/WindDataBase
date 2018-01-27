@@ -54,3 +54,19 @@ class WindStock:
             print ( "XXXXXXXXXXXXXXXXXXXX    ", symbol )
             print ( "XXXXXXXXXXXXXXXXXXXX    ", datetime.datetime.now().strftime("%Y-%m-%d-%H"), ": SQL Exception :%s" % (e) )
             return None
+
+    def getFutureData(self, symbol, start_date):
+        w.start()
+        try:
+            stock = w.wsd(symbol, """lastradeday_s,last_trade_day,open,high,low,close,volume,amt,oi,oi_chg,
+                pre_settle,settle,susp_reason,close3,contractmultiplier,changelt,
+                mfprice""", start_date, (datetime.datetime.today()-datetime.timedelta(1)).strftime("%Y-%m-%d"))
+            if stock.ErrorCode == 0:
+                return(stock.Data)
+            else:
+                return None
+
+        except Exception as e:
+            print ( "XXXXXXXXXXXXXXXXXXXX    ", symbol )
+            print ( "XXXXXXXXXXXXXXXXXXXX    ", datetime.datetime.now().strftime("%Y-%m-%d-%H"), ": SQL Exception :%s" % (e) )
+            return None

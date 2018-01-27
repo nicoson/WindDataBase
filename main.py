@@ -21,7 +21,7 @@ def main():
     # update database by using [updatelog] table
     print(currentTime(),": Download A Stock Starting:")
     for symbol in symbols:
-        start_date = db.getStockUpdateDate(symbol)
+        start_date = db.getUpdateDate(symbol)
         print(currentTime(), "===========> Downloading for ", symbol, ": ")
         print("last update date: ", start_date[0].strftime("%Y-%m-%d"))
         if start_date != None:
@@ -29,7 +29,7 @@ def main():
 
             if data != None:
                 print(currentTime(), "===========> Inserting Data into DB for ", symbol, ": ")
-                db.insertData(symbol, data)
+                db.insertStockData(symbol, data)
             else:
                 print(symbol, " has no new data")
         else:
