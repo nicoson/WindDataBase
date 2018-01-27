@@ -11,7 +11,7 @@ def currentTime():
 def main():
     ws = WindStock()
     # get category list
-    # symbols = ws.getFutureCodesWind()
+    symbols = ws.getFutureCodesWind()
     symbols = symbols[0:3]    # test case
 
     # create tables for new category
