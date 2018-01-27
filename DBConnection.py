@@ -113,7 +113,7 @@ class DBConnect:
 			close3 double DEFAULT NULL COMMENT '指定交易日的收盘价，若无成交则返回为空。',
 			contractmultiplier double DEFAULT NULL COMMENT '合约乘数',
 			changelt double DEFAULT NULL COMMENT '涨跌幅限制',
-			mfprice double DEFAULT NULL COMMENT '最小变动价位',
+			mfprice varchar(50) DEFAULT NULL COMMENT '最小变动价位',
 			created_date datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建日期',
 			updated_date datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新日期'
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8"""
@@ -235,7 +235,7 @@ class DBConnect:
 
 		index = len(data)
 		for i in range(len(data)):
-			if data[i][0] != None:
+			if data[i][2] != None:	# use open price to determine the first non-null data
 				index = i
 				break
 
@@ -253,11 +253,15 @@ class DBConnect:
 		close,volume,amt,oi,oi_chg,pre_settle,settle,susp_reason,close3,contractmultiplier,
 		changelt,mfprice) VALUES""" + sql
 		sql = sql.replace('None', 'null')
+		print("pass step 1")
 
 		try:
 			self.cursor.execute(sql)
 			self.db.commit()
+			print("pass step 2")
 			self.updateLogTable(symbol, datetime.datetime.now().strftime("%Y-%m-%d"))
+			print("pass step 3")
+
 		except Exception as e:
 			print("XXXXXXXXXXXXX	insertFutureData issue for stock: ", symbol)
 
