@@ -253,14 +253,11 @@ class DBConnect:
 		close,volume,amt,oi,oi_chg,pre_settle,settle,susp_reason,close3,contractmultiplier,
 		changelt,mfprice) VALUES""" + sql
 		sql = sql.replace('None', 'null')
-		print("pass step 1")
 
 		try:
 			self.cursor.execute(sql)
 			self.db.commit()
-			print("pass step 2")
 			self.updateLogTable(symbol, datetime.datetime.now().strftime("%Y-%m-%d"))
-			print("pass step 3")
 
 		except Exception as e:
 			print("XXXXXXXXXXXXX	insertFutureData issue for stock: ", symbol)

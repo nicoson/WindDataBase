@@ -30,7 +30,6 @@ def main():
 
             if data != None:
                 print(currentTime(), "===========> Inserting Data into DB for ", symbol, ": ")
-                print(len(data))
                 db.insertFutureData(symbol, data)
                 print("Data insert complete successfully!")
             else:
