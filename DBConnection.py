@@ -235,11 +235,17 @@ class DBConnect:
 
 		index = len(data)
 		for i in range(len(data)):
-			if data[i][2] != None:	# use open price to determine the first non-null data
+			if data[i][3] != None:	# use close price to determine the first non-null data
 				index = i
 				break
 
-		sli = slice(index, 99999999999)
+		indexBack = 0
+		for i in range(len(data)-1,-1,-1):
+			if data[i][3] != None:	# use close price to determine the first non-null data
+				indexBack = i+1
+				break
+		
+		sli = slice(index, indexBack)
 		data = data[sli]
 		
 		if len(data) == 0:
