@@ -19,18 +19,19 @@ class WindStock:
         #stockCodes=w.wset("sectorconstituent","date="+end_date+";sectorid=a001010100000000;field=wind_code")
         #不加日期参数取最新股票代码
         stockCodes = w.wset("sectorconstituent","sectorid=a001010100000000;field=wind_code")
-        # futureCodes = w.wset("sectorconstituent","sector=全部期货连续合约;field=wind_code")
         return stockCodes.Data[0]
         #return stockCodes
 
     def getFutureCodesWind(self, end_date = time.strftime('%Y%m%d',time.localtime(time.time()))):
         w.start()
-        futureCodes = w.wset("sectorconstituent","sector=全部期货连续合约;field=wind_code")
+        # futureCodes = w.wset("sectorconstituent","sector=全部期货连续合约;field=wind_code")
+        # futureCodes = w.wset("sectorconstituent","sector=全部国内商品期货合约;field=wind_code")
+        futureCodes = w.wset("sectorconstituent","sector=全部国内期货合约(含已摘牌);field=wind_code")
         futureCodes = futureCodes.Data[0]
-        indexCodes = w.wset("sectorconstituent","sector=WIND商品品种指数;field=wind_code")
-        indexCodes = indexCodes.Data[0]
-        futureCodes += indexCodes
-        mainCode = list(set(list(map(self.getMainCode, futureCodes))));
+        # indexCodes = w.wset("sectorconstituent","sector=WIND商品品种指数;field=wind_code")
+        # indexCodes = indexCodes.Data[0]
+        # futureCodes += indexCodes
+        mainCode = list(set(list(map(self.getMainCode, futureCodes))))
         return futureCodes + mainCode
 
     def getMainCode(self, code):
