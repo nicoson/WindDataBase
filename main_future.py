@@ -1,5 +1,11 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
+#
+# sample:
+# > python3 main_future.py --history=true
+# ==============================================================================
+
+import argparse
 from WindPy import *
 from DBConnection import *
 from WindConnection import *
@@ -8,10 +14,13 @@ import datetime,time
 def currentTime():
     return datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-def main():
+def main(isHistory = False):
     ws = WindStock()
     # get category list
-    symbols = ws.getFutureCodesWind()
+    if isHistory:
+        symbols = ws.getFutureCodesWindAll()    # for history data codes
+    else:
+        symbols = ws.getFutureCodesWindOnMarket()    # for current trading data codes
     # symbols = symbols[0:3]    # test case
 
     # create tables for new category
@@ -41,4 +50,7 @@ def main():
     db.destroy()
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description='choose to load history/current data')
+    parser.add_argument('--history', type=str, default = 'false')
+    args = parser.parse_args()
+    main(args.history == 'true')

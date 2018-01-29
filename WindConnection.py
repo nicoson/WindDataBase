@@ -22,7 +22,9 @@ class WindStock:
         return stockCodes.Data[0]
         #return stockCodes
 
-    def getFutureCodesWind(self, end_date = time.strftime('%Y%m%d',time.localtime(time.time()))):
+    # get all of the contracts in the history
+    # get history data
+    def getFutureCodesWindAll(self, end_date = time.strftime('%Y%m%d',time.localtime(time.time()))):
         w.start()
         # futureCodes = w.wset("sectorconstituent","sector=全部期货连续合约;field=wind_code")
         # futureCodes = w.wset("sectorconstituent","sector=全部国内商品期货合约;field=wind_code")
@@ -31,6 +33,15 @@ class WindStock:
         # indexCodes = w.wset("sectorconstituent","sector=WIND商品品种指数;field=wind_code")
         # indexCodes = indexCodes.Data[0]
         # futureCodes += indexCodes
+        mainCode = list(set(list(map(self.getMainCode, futureCodes))))
+        return futureCodes + mainCode
+
+    # get all of the contracts on the market now
+    # for maintaining the database
+    def getFutureCodesWindOnMarket(self, end_date = time.strftime('%Y%m%d',time.localtime(time.time()))):
+        w.start()
+        futureCodes = w.wset("sectorconstituent","sector=全部国内商品期货合约;field=wind_code")
+        futureCodes = futureCodes.Data[0]
         mainCode = list(set(list(map(self.getMainCode, futureCodes))))
         return futureCodes + mainCode
 
