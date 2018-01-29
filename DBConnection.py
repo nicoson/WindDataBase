@@ -236,7 +236,7 @@ class DBConnect:
 		index = len(data)
 		for i in range(len(data)):
 			if data[i][0] != 'None':	# use lastradeday_s to determine the first non-null data
-				index = max(i-1, 0)
+				index = i
 				break
 
 		indexBack = 0
