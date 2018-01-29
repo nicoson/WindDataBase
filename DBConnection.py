@@ -235,13 +235,13 @@ class DBConnect:
 
 		index = len(data)
 		for i in range(len(data)):
-			if data[i][5] != None:	# use close price to determine the first non-null data
-				index = i
+			if data[i][0] != None:	# use lastradeday_s to determine the first non-null data
+				index = max(i-1, 0)
 				break
 
 		indexBack = 0
 		for i in range(len(data)-1,-1,-1):
-			if data[i][5] != None:	# use close price to determine the first non-null data
+			if data[i][5] != None:	# use close price to determine the last non-null data
 				indexBack = i+1
 				break
 		
@@ -258,6 +258,7 @@ class DBConnect:
 		sql = "INSERT INTO `" + symbol + """` (lastradeday_s,last_trade_day,open,high,low,
 		close,volume,amt,oi,oi_chg,pre_settle,settle,susp_reason,close3,contractmultiplier,
 		changelt,mfprice) VALUES""" + sql
+		sql = sql.replace("'None'", 'null')	# for date column
 		sql = sql.replace('None', 'null')
 
 		try:
