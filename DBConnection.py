@@ -294,7 +294,7 @@ class DBConnect:
 		for symbol in symbols:
 			self.createMainContractSingleTable(symbol)
 
-	def createMainContractSingleTable(self, symble):
+	def createMainContractSingleTable(self, symbol):
 		# create level 2 daily data set table for future
 		# 使用预处理语句创建表
 		sql = "CREATE TABLE IF NOT EXISTS `" + symbol + """` (
