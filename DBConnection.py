@@ -19,6 +19,25 @@ class DBConnect:
 		self.cursor = self.db.cursor()
 		# create log table for update history
 
+	def createUpdateLogTable(self):
+		sql = "CREATE TABLE IF NOT EXISTS " + self.logTable + """ (
+			stock_code varchar(10) NOT NULL UNIQUE KEY COMMENT '股票代码',
+			last_modified datetime NOT NULL DEFAULT '""" + INITDATE + """' COMMENT '最后同步日期'
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8"""
+
+		self.cursor.execute(sql)
+		self.db.commit()
+
+	# create table for A stock
+	def createTables(self, symbols):
+		for symbol in symbols:
+			self.createSingleTable(symbol)
+	
+	# create table for future
+	def createFutureTables(self, symbols):
+		for symbol in symbols:
+			self.createFutureSingleTableL2(symbol)
+	
 	def createSingleTable(self, symbol):
 		# symbol = symbol
 		# symbol = symbol.split('.')
@@ -94,7 +113,6 @@ class DBConnect:
 		if result == None:
 			self.updateLogTable(symbol)
 
-
 	def createFutureSingleTableL2(self, symbol):
 		# create level 2 daily data set table for future
 		# 使用预处理语句创建表
@@ -136,29 +154,6 @@ class DBConnect:
 		if result == None:
 			self.updateLogTable(symbol)
 
-
-	# create table for A stock
-	def createTables(self, symbols):
-		for symbol in symbols:
-			self.createSingleTable(symbol)
-	
-
-	# create table for future
-	def createFutureTables(self, symbols):
-		for symbol in symbols:
-			self.createFutureSingleTableL2(symbol)
-	
-
-	def createUpdateLogTable(self):
-		sql = "CREATE TABLE IF NOT EXISTS " + self.logTable + """ (
-			stock_code varchar(10) NOT NULL UNIQUE KEY COMMENT '股票代码',
-			last_modified datetime NOT NULL DEFAULT '""" + INITDATE + """' COMMENT '最后同步日期'
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8"""
-
-		self.cursor.execute(sql)
-		self.db.commit()
-
-
 	def updateLogTable(self, symbol, lastModified = INITDATE):
 		print("=========> " + symbol)
 		sql = "INSERT INTO " + self.logTable + " VALUES('" + symbol + "', '" + lastModified \
@@ -169,11 +164,9 @@ class DBConnect:
 		self.cursor.execute(sql)
 		self.db.commit()
 
-
 	def destroy(self):
 		self.cursor.close()
 		self.db.close()
-
 
 	def getUpdateDate(self, symbol):
 		sql = "SELECT last_modified FROM updatelog WHERE stock_code='" + symbol +"' limit 1"
@@ -186,7 +179,6 @@ class DBConnect:
 			print("XXXXXXXXXXXXX	getUpdateDate issue for stock: ", symbol)
 			print(e)
 			return None
-
 
 	# for stock
 	def insertStockData(self, symbol, data):
@@ -227,7 +219,6 @@ class DBConnect:
 			print("XXXXXXXXXXXXX	insertStockData issue for stock: ", symbol)
 
 		# print(sql)
-
 
 	# for future
 	def insertFutureData(self, symbol, data):
@@ -275,9 +266,64 @@ class DBConnect:
 		# print(sql)
 
 
-	# get all the tables by name
+
+	# ===============================================
+	# db code for maincontract_main
+	# ===============================================
+	# get all the contracts by name
 	def getTableListByName(self, tname):
 		sql = "show tables like '" + tname + "%'"
 		self.cursor.execute(sql)
 		result = self.cursor.fetchall()
 		return result
+
+	# create log table for the 1st time
+	def createUpdateLogTable4MainContract():
+		sql = "CREATE TABLE IF NOT EXISTS " + self.logTable + """ (
+			stock_code varchar(10) NOT NULL UNIQUE KEY COMMENT '代码',
+			current_maincode varchar(20) NOT NULL COMMENT '当前主力合约',
+			last_trade_day datetime NOT NULL DEFAULT '1990-01-01' COMMENT '最新日期',
+			updated_date datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新日期'
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8"""
+
+		self.cursor.execute(sql)
+		self.db.commit()
+
+	# create table for A stock
+	def createMainContractTables(self, symbols):
+		for symbol in symbols:
+			self.createMainContractSingleTable(symbol)
+
+	def createMainContractSingleTable(self, symbles):
+		# create level 2 daily data set table for future
+		# 使用预处理语句创建表
+		sql = "CREATE TABLE IF NOT EXISTS `" + symbol + """` (
+			ID bigint(20) primary key NOT NULL auto_increment,
+			lastradeday_s date DEFAULT NULL COMMENT ' 表示某证券有交易的最新交易日期。',
+			last_trade_day date DEFAULT NULL COMMENT '表示某证券所在市场的最新一个交易日期。',
+			open double DEFAULT NULL COMMENT '开盘价',
+			high double DEFAULT NULL COMMENT '最高价',
+			low double DEFAULT NULL COMMENT '最低价',
+			close double DEFAULT NULL COMMENT ' 收盘价,证券在交易日所在指定周期的最后一条行情数据中的收盘价',
+			volume double DEFAULT NULL COMMENT '成交量',
+			amt double DEFAULT NULL COMMENT '成交金额',
+			oi double DEFAULT NULL COMMENT '持仓量',
+			oi_chg double DEFAULT NULL COMMENT ' 持仓量变化',
+			pre_settle double DEFAULT NULL COMMENT ' 前结算价',
+			settle double DEFAULT NULL COMMENT '结算价',
+			susp_reason varchar(200) DEFAULT NULL COMMENT '证券于某交易日停牌的原因。',
+			close3 double DEFAULT NULL COMMENT '指定交易日的收盘价，若无成交则返回为空。',
+			contractmultiplier double DEFAULT NULL COMMENT '合约乘数',
+			changelt double DEFAULT NULL COMMENT '涨跌幅限制',
+			mfprice varchar(50) DEFAULT NULL COMMENT '最小变动价位',
+			created_date datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建日期',
+			updated_date datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新日期'
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8"""
+		
+		try:
+			# print(sql)
+			self.cursor.execute(sql)
+			self.db.commit()
+		except Exception as e:
+			print("  ============>  " + e)
+			return

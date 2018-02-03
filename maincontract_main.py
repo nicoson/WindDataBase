@@ -23,6 +23,9 @@ def main():
 
     # create tables for new category
     db = DBConnect("localhost","root","root","future_l2")   # database for level 2 data for future
+    db_mc = DBConnect("localhost","root","root","maincontract")   # database for main contract
+    db_mc.createUpdateLogTable4MainContract()
+    db_mc.createMainContractTables(symbols)
 
     # update database by using [updatelog] table
     print(currentTime(),"==================> start generating main contract: ")
@@ -36,6 +39,7 @@ def main():
 
     # job finished, close the db connection
     db.destroy()
+    db_mc.destroy()
 
 if __name__ == "__main__":
     main()
