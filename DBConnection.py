@@ -18,7 +18,6 @@ class DBConnect:
 		# 使用 cursor() 方法创建一个游标对象 cursor
 		self.cursor = self.db.cursor()
 		# create log table for update history
-		self.createUpdateLogTable()
 
 	def createSingleTable(self, symbol):
 		# symbol = symbol
@@ -274,3 +273,11 @@ class DBConnect:
 			print("XXXXXXXXXXXXX	insertFutureData issue for stock: ", symbol)
 
 		# print(sql)
+
+
+	# get all the tables by name
+	def getTableListByName(self, tname):
+		sql = "show tables like '" + tname + "%'"
+		self.cursor.execute(sql)
+		result = self.cursor.fetchall()
+		return result

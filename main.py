@@ -16,6 +16,7 @@ def main():
 
     # create tables for new category
     db = DBConnect("localhost","root","root","astock")
+    db.createUpdateLogTable()
     db.createTables(symbols)
 
     # update database by using [updatelog] table

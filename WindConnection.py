@@ -45,6 +45,15 @@ class WindStock:
         mainCode = list(set(list(map(self.getMainCode, futureCodes))))
         return futureCodes + mainCode
 
+    # get all of the categories on the market
+    # for maintaining the active contract
+    def getCateFutureCodes(self, end_date = time.strftime('%Y%m%d',time.localtime(time.time()))):
+        w.start()
+        futureCodes = w.wset("sectorconstituent","sector=全部中国商品(CN);field=wind_code")
+        futureCodes = futureCodes.Data[0]
+        mainCode = list(set(list(map(self.getMainCode, futureCodes))))
+        return futureCodes + mainCode
+
     def getMainCode(self, code):
         res, num = re.subn('\d','',code)
         return res

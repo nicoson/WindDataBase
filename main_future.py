@@ -7,7 +7,7 @@
 
 import argparse
 from WindPy import *
-from DBConnection import *
+from DBConnection import DBConnect
 from WindConnection import *
 import datetime,time
 
@@ -26,6 +26,7 @@ def main(isHistory = False):
     # create tables for new category
     # db = DBConnect("localhost","root","root","future")    # old database for future data
     db = DBConnect("localhost","root","root","future_l2")   # database for level 2 data for future
+    db.createUpdateLogTable()
     db.createFutureTables(symbols)
 
     # update database by using [updatelog] table
