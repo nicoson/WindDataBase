@@ -9,7 +9,7 @@ import argparse
 from WindPy import *
 from DBConnection import *
 from WindConnection import *
-import datetime,time
+import datetime,time,re
 
 def currentTime():
     return datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -29,7 +29,9 @@ def main():
     for symbol in symbols:
         print(symbol.find('.'))
         print(symbol[:symbol.find('.')])
-        print(db.getTableListByName(symbol[:symbol.find('.')]))
+        tablelist = db.getTableListByName(symbol[:symbol.find('.')])
+        tablelist = list(filter(lambda x : re.match(r'%s\d{3,4}\.\w{2,3}', x[0]) != None))
+        print(tablelist)
         break
 
     # job finished, close the db connection
