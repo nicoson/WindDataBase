@@ -30,7 +30,7 @@ def main():
     print(currentTime(),"==================> start generating main contract: ")
     for symbol in symbols:
         print(symbol.find('.'))
-        print(getTableListByName(symbol[:symbol.find('.')]))
+        print(db.getTableListByName(symbol[:symbol.find('.')]))
         break
 
     # job finished, close the db connection
