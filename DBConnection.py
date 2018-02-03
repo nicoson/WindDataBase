@@ -3,6 +3,10 @@
 import pymysql
 import datetime,time
 
+# start date for loading the data from wind
+INITDATE = '2015-01-01'
+# INITDATE = '1990-01-01'
+
 class DBConnect:
 	def __init__(self, server, user, psd, database):
 		self.server		= server
@@ -149,14 +153,14 @@ class DBConnect:
 	def createUpdateLogTable(self):
 		sql = "CREATE TABLE IF NOT EXISTS " + self.logTable + """ (
 			stock_code varchar(10) NOT NULL UNIQUE KEY COMMENT '股票代码',
-			last_modified datetime NOT NULL DEFAULT '1990-01-01' COMMENT '最后同步日期'
+			last_modified datetime NOT NULL DEFAULT '""" + INITDATE + """' COMMENT '最后同步日期'
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8"""
 
 		self.cursor.execute(sql)
 		self.db.commit()
 
 
-	def updateLogTable(self, symbol, lastModified = "1990-01-01"):
+	def updateLogTable(self, symbol, lastModified = INITDATE):
 		print("=========> " + symbol)
 		sql = "INSERT INTO " + self.logTable + " VALUES('" + symbol + "', '" + lastModified \
 			+ "') ON DUPLICATE KEY UPDATE stock_code='" + symbol \
