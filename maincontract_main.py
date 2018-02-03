@@ -37,10 +37,8 @@ def main():
         tablelist = db.getTableListByName(prefix)
         # filter the case 'a' from 'ag' or 'au'
         tablelist = list(map(lambda y : y[0], filter(lambda x : re.match(r'%s\d{3,4}\.\w{2,3}' %prefix, x[0].lower()) != None, tablelist)))
-        print(tablelist)
         if tablelist == None:
             return
-
         tablelist = sortTableList(tablelist)
         print(tablelist)
 

@@ -333,7 +333,7 @@ class DBConnect:
 
 	def getCurrentMainContractBySymbol(self, symbol):
 		sql = "Select current_maincode, last_trade_day from " + self.logTable + """
-			where stock_code = """ + symbol + " limit 1;"
+			where stock_code = '""" + symbol + "' limit 1;"
 
 		# print(sql)
 		self.cursor.execute(sql)
