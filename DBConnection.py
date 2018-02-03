@@ -278,7 +278,7 @@ class DBConnect:
 		return result
 
 	# create log table for the 1st time
-	def createUpdateLogTable4MainContract():
+	def createUpdateLogTable4MainContract(self):
 		sql = "CREATE TABLE IF NOT EXISTS " + self.logTable + """ (
 			stock_code varchar(10) NOT NULL UNIQUE KEY COMMENT '代码',
 			current_maincode varchar(20) NOT NULL COMMENT '当前主力合约',
