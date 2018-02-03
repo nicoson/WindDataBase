@@ -22,14 +22,13 @@ def main():
     # symbols = symbols[0:3]    # test case
 
     # create tables for new category
-    # db = DBConnect("localhost","root","root","future")    # old database for future data
     db = DBConnect("localhost","root","root","future_l2")   # database for level 2 data for future
-    
 
     # update database by using [updatelog] table
     print(currentTime(),"==================> start generating main contract: ")
     for symbol in symbols:
         print(symbol.find('.'))
+        print(symbol[:symbol.find('.')])
         print(db.getTableListByName(symbol[:symbol.find('.')]))
         break
 
