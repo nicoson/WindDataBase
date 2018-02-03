@@ -32,14 +32,42 @@ def main():
     for symbol in symbols:
         prefix = symbol[:symbol.find('.')].lower()
         print(prefix)
+
+        # get the table list from l2 database based on the symbol
         tablelist = db.getTableListByName(prefix)
+        # filter the case 'a' from 'ag' or 'au'
         tablelist = list(map(lambda y : y[0], filter(lambda x : re.match(r'%s\d{3,4}\.\w{2,3}' %prefix, x[0].lower()) != None, tablelist)))
         print(tablelist)
+        if tablelist == None:
+            return
+
+        tablelist = sortTableList(tablelist)
+        print(tablelist)
+
+        # get the info from updatelog to merge the main contract table
+        cinfo = db_mc.getCurrentMainContractBySymbol(symbol)
+        if cinfo == None:
+            ccode, lastdate = [None, None]
+        else:
+            ccode, lastdate = cinfo
         break
+
+
 
     # job finished, close the db connection
     db.destroy()
     db_mc.destroy()
+
+def sortTableList(tlist):
+    tlist.sort()
+    ind = 0
+    for i in range(len(tlist)):
+        if re.match(r'[a-zA-Z]{1,3}[9]\d{3}\.\w{2,3}', tlist[i]) == None:
+            continue
+        ind = i
+        break
+    tlist = tlist[ind:] + tlist[:ind]
+    return tlist
 
 if __name__ == "__main__":
     main()

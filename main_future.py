@@ -9,7 +9,7 @@ import argparse
 from WindPy import *
 from DBConnection import DBConnect
 from WindConnection import *
-import datetime,time
+import datetime,time,re
 
 def currentTime():
     return datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -27,16 +27,19 @@ def main(isHistory = False):
     # db = DBConnect("localhost","root","root","future")    # old database for future data
     db = DBConnect("localhost","root","root","future_l2")   # database for level 2 data for future
     db.createUpdateLogTable()
-    db.createFutureTables(symbols)
+    db.createFutureTables(list(map(translate, symbols)))
 
     # update database by using [updatelog] table
     print(currentTime(),": Download Future Index Starting:")
     for symbol in symbols:
+        windsymbol = symbol
+        symbol = translate(symbol) # convert pm803.czc to pm1803.czc
+
         start_date = db.getUpdateDate(symbol)
         print(currentTime(), "===========> Downloading for ", symbol, ": ")
         print("last update date: ", start_date[0].strftime("%Y-%m-%d"))
         if start_date != None:
-            data = ws.getFutureData(symbol, start_date[0].strftime("%Y-%m-%d"))
+            data = ws.getFutureData(windsymbol, start_date[0].strftime("%Y-%m-%d"))
 
             if data != None:
                 print(currentTime(), "===========> Inserting Data into DB for ", symbol, ": ")
@@ -49,6 +52,15 @@ def main(isHistory = False):
 
     # job finished, close the db connection
     db.destroy()
+
+
+# convert ag803.czc to ag1803.czc
+def translate(symbol):
+    if re.match(r'[a-zA-Z]{1,3}\d{3}\.\w{2,3}', symbol) != None:
+        ind = symbol.find('.')
+        symbol = symbol[:ind-3] + '1' + symbol[ind-3:]
+    return symbol
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='choose to load history/current data')

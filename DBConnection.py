@@ -324,6 +324,18 @@ class DBConnect:
 			# print(sql)
 			self.cursor.execute(sql)
 			self.db.commit()
+			print('==========>  table "' + symbol + '" created!')
 		except Exception as e:
-			print("  ============>  " + e)
-			return
+			print('==========> ' + e)
+			print("  ============>  table '" + symbol + "' already been created!")
+		
+		return
+
+	def getCurrentMainContractBySymbol(symbol):
+		sql = "Select current_maincode, last_trade_day from " + self.logTable + """
+			where stock_code = """ + symbol + " limit 1;"
+
+		# print(sql)
+		self.cursor.execute(sql)
+		result = self.cursor.fetchone()
+		return result
