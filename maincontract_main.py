@@ -28,9 +28,9 @@ def main():
     print(currentTime(),"==================> start generating main contract: ")
     for symbol in symbols:
         print(symbol.find('.'))
-        print(symbol[:symbol.find('.')])
-        tablelist = db.getTableListByName(symbol[:symbol.find('.')])
-        tablelist = list(filter(lambda x : re.match(r'%s\d{3,4}\.\w{2,3}', x[0]) != None))
+        prefix = symbol[:symbol.find('.')]
+        tablelist = db.getTableListByName(prefix)
+        tablelist = list(filter(lambda x : re.match(r'%s\d{3,4}\.\w{2,3}' %prefix, x[0]) != None))
         print(tablelist)
         break
 
