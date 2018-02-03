@@ -42,8 +42,7 @@ class WindStock:
         w.start()
         futureCodes = w.wset("sectorconstituent","sector=全部国内商品期货合约;field=wind_code")
         futureCodes = futureCodes.Data[0]
-        mainCode = list(set(list(map(self.getMainCode, futureCodes))))
-        return futureCodes + mainCode
+        return futureCodes
 
     # get all of the categories on the market
     # for maintaining the active contract
@@ -51,8 +50,7 @@ class WindStock:
         w.start()
         futureCodes = w.wset("sectorconstituent","sector=全部中国商品(CN);field=wind_code")
         futureCodes = futureCodes.Data[0]
-        mainCode = list(set(list(map(self.getMainCode, futureCodes))))
-        return futureCodes + mainCode
+        return futureCodes
 
     def getMainCode(self, code):
         res, num = re.subn('\d','',code)

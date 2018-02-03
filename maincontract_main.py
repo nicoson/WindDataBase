@@ -27,8 +27,8 @@ def main():
     # update database by using [updatelog] table
     print(currentTime(),"==================> start generating main contract: ")
     for symbol in symbols:
-        print(symbol.find('.'))
         prefix = symbol[:symbol.find('.')].lower()
+        print(prefix)
         tablelist = db.getTableListByName(prefix)
         tablelist = list(map(lambda y : y[0], filter(lambda x : re.match(r'%s\d{3,4}\.\w{2,3}' %prefix, x[0].lower()) != None, tablelist)))
         print(tablelist)
