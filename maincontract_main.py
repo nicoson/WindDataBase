@@ -59,17 +59,59 @@ def main():
         maincontract = []
         singlebase = None
         singlenext = None
+        point = 0 if lastdate == None else None
+        print('======> ', ccode, lastdate, point)
         for tb in tablelist:
             singlebase = singlenext
             singlenext = getConvertTable(tb, db)
 
-            if singlebase == None:
+            if singlebase == -1:
+                if len(maincontract) > 0:
+                    db_mc.updateMainContract(symbol, maincontract)
+                break
+            elif singlebase == None:
                 continue
             elif singlenext == None:
                 singlenext = singlebase
                 singlebase = None
             else:
                 # todo
+                max_base = len(singlebase)
+                max_next = len(singlenext)
+                if lastdate == None:
+                    lastdate = singlebase[0][0]
+                    pt_base = 0
+                else:
+                    temp = list(map(lambda x : x[0], singlebase))
+                    try:
+                        pt_base = temp.index(lastdate) + 1 # start from the next day
+                    except:
+                        continue
+                    if pt_base >= max_base:
+                        continue
+
+                nextdate = list(map(lambda x : x[0], singlenext))
+                pt_next = nextdate.index(lastdate)
+
+                for i in range(pt_base, max_base):
+                    td = singlebase[i][0]
+                    try:
+                        ind = nextdate.index(td)
+                        if singlebase[i][7] < singlenext[ind][7]:
+                            continue
+                    except:
+                        continue
+                    
+                    if i+1 < max_base:
+                        # main contract changed to another contract
+                        lastdate = single
+                        maincontract += singlebase[pt_base:i+1]
+                    else:
+                        # main contract not finished, need jump out the whole outer loop
+                        maincontract += singlebase[pt_base:]
+                        singlebase = -1
+                    break
+                
                 print(singlenext[0])
 
             

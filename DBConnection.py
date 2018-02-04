@@ -269,6 +269,10 @@ class DBConnect:
 
 	# ===============================================
 	# db code for maincontract_main
+	#
+	# Algorithm:
+	# 	通过在updatelog中记录contract_code和last_trade_day来实现
+	#	实现迅速定位，同时只对前后两个合约的交易量进行比较来组成主力合约
 	# ===============================================
 	# get all the contracts by name
 	def getTableListByName(self, tname):
@@ -325,7 +329,7 @@ class DBConnect:
 			self.db.commit()
 			print('==========>  table "' + symbol + '" created!')
 		except Exception as e:
-			print('==========> ' + e)
+			print('==========> ', e)
 			print("============>  table '" + symbol + "' already been created!")
 		
 		return
@@ -347,3 +351,38 @@ class DBConnect:
 		self.cursor.execute(sql)
 		result = self.cursor.fetchall()
 		return result
+
+	def updateMainContract(self, symbol, maincontract):
+		data[0] = list(map(str, data[0]))
+		data[1] = list(map(str, data[1]))
+		data = list(tuple(i) for i in zip(*data))
+		data = list(map(str, data))
+
+		sql = ','.join(data)
+		sql = "INSERT INTO `" + symbol + """` (lastradeday_s,last_trade_day,contract_code,
+		open,high,low,close,volume,amt,oi,oi_chg,pre_settle,settle,contractmultiplier,
+		changelt,mfprice) VALUES""" + sql
+		sql = sql.replace("'None'", 'null')	# for date column
+		sql = sql.replace('None', 'null')
+
+		try:
+			self.cursor.execute(sql)
+			self.db.commit()
+			self.updateMainContractLogTable(symbol, maincontract[0][2], maincontract[0][0], datetime.datetime.now().strftime("%Y-%m-%d"))
+
+		except Exception as e:
+			print("XXXXXXXXXXXXX	insertFutureData issue for stock: ", symbol)
+
+	def updateMainContractLogTable(symbol, cmaincode, ltd, lastModified):
+		print("=========> " + symbol)
+		sql = "INSERT INTO " + self.logTable + " VALUES('" + symbol + "', '" + cmaincode \
+			+ "', '" + ltd + "', '" + lastModified + "') ON DUPLICATE KEY UPDATE stock_code='" + symbol \
+			+ "', current_maincode='" + cmaincode + "', last_trade_day='" + ltd \
+			+ "', updated_date='" + lastModified + "'"
+
+		print(sql)
+		try:
+			self.cursor.execute(sql)
+			self.db.commit()
+		except Exception as e:
+			print("XXXXXXXXXXXXX	updateMainContractLogTable issue: ", e)
