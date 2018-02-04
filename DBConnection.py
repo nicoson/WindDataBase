@@ -353,9 +353,7 @@ class DBConnect:
 		return result
 
 	def updateMainContract(self, symbol, data):
-		data[0] = list(map(str, data[0]))
-		data[1] = list(map(str, data[1]))
-		data = list(tuple(i) for i in zip(*data))
+		# data = list(map(lambda datum : [str(datum[0])] + [str(datum[1])] + datum[2:], data))
 		data = list(map(str, data))
 
 		sql = ','.join(data)
