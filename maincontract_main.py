@@ -94,12 +94,8 @@ def main():
                     try:
                         pt_base = temp.index(lastdate) + 1 # start from the next day
                     except:
-                        print("step 9:")
-                        print('can not find')
-                        print(lastdate)
                         continue
                     if pt_base >= max_base:
-                        print("step 10:")
                         print(pt_base, max_base)
                         continue
 

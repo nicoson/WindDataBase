@@ -365,7 +365,7 @@ class DBConnect:
 		sql = sql.replace("'None'", 'null')	# for date column
 		sql = sql.replace('None', 'null')
 
-		print(sql)
+		# print(sql)
 		try:
 			self.cursor.execute(sql)
 			self.db.commit()
@@ -382,7 +382,7 @@ class DBConnect:
 			+ "', current_maincode='" + cmaincode + "', last_trade_day='" + ltd \
 			+ "', updated_date='" + lastModified + "'"
 
-		print(sql)
+		# print(sql)
 		try:
 			self.cursor.execute(sql)
 			self.db.commit()
