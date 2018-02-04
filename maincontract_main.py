@@ -68,7 +68,9 @@ def main():
             if singlebase == -1:
                 print("step last:")
                 if len(maincontract) > 0:
+                    print("Inserting Data for: ", symbol)
                     db_mc.updateMainContract(symbol, maincontract)
+                    print("Insert complete")
                 break
             elif singlebase == None:
                 print("step 1:")
@@ -128,9 +130,9 @@ def main():
                     break
 
             
-        print('=================> result:')
+        # print('=================> result:')
         # print(maincontract)
-        break
+        # break
 
     # job finished, close the db connection
     db.destroy()
