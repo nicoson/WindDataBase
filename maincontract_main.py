@@ -61,6 +61,7 @@ def main():
         singlenext = None
         print('======> ', ccode, lastdate)
         for tb in tablelist:
+            print('==========>   ', tb)
             singlebase = singlenext
             singlenext = getConvertTable(tb, db)
 
@@ -99,6 +100,7 @@ def main():
                     except:
                         continue
                     
+                    print('======>    ',singlebase[i][7],singlenext[ind][7]:)
                     if i+1 < max_base:
                         # main contract changed to another contract
                         lastdate = singlebase[i+1][0]
@@ -108,8 +110,6 @@ def main():
                         maincontract += singlebase[pt_base:]
                         singlebase = -1
                     break
-                
-                print(singlenext[0])
 
             
         print('=================> result:')
