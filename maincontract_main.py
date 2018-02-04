@@ -95,7 +95,7 @@ def sortTableList(tlist):
 def getConvertTable(symbol, db):
     singlebase = db.getContractDataBySymbol(symbol)
     if singlebase != None:
-        singlebase = list(map(lambda x : x[:2] + [symbol] + x[2:], singlebase))
+        singlebase = list(map(lambda x : list(x[:2]) + [symbol] + list(x[2:]), singlebase))
     return singlebase
 
 if __name__ == "__main__":
