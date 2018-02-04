@@ -101,7 +101,7 @@ def main():
                     td = singlebase[i][0]
                     try:
                         ind = nextdate.index(td)
-                        if singlebase[i][7] < singlenext[ind][7]:
+                        if singlebase[i][7] > singlenext[ind][7]:
                             continue
                     except:
                         continue
