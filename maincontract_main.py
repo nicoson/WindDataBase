@@ -66,22 +66,28 @@ def main():
             singlenext = getConvertTable(tb, db)
 
             if singlebase == -1:
+                print("step last:")
                 if len(maincontract) > 0:
                     db_mc.updateMainContract(symbol, maincontract)
                 break
             elif singlebase == None:
+                print("step 1:")
                 continue
             elif singlenext == None:
+                print("step 2:")
                 singlenext = singlebase
                 singlebase = None
             else:
                 # todo
+                print("step 3:")
                 max_base = len(singlebase)
                 max_next = len(singlenext)
                 if lastdate == None:
+                    print("step 4:")
                     lastdate = singlebase[0][0]
                     pt_base = 0
                 else:
+                    print("step 5:")
                     temp = list(map(lambda x : x[0], singlebase))
                     try:
                         pt_base = temp.index(lastdate) + 1 # start from the next day
@@ -100,7 +106,8 @@ def main():
                     except:
                         continue
                     
-                    print('======>    ',singlebase[i][7],singlenext[ind][7]:)
+                    print("step 6:")
+                    print('======>    ',singlebase[i][7],singlenext[ind][7])
                     if i+1 < max_base:
                         # main contract changed to another contract
                         lastdate = singlebase[i+1][0]
