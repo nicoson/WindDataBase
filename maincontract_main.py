@@ -68,10 +68,8 @@ def main():
             if singlebase == -1:
                 break
             elif singlebase == None:
-                print("step 1:")
                 continue
             elif singlenext == None:
-                print("step 2:")
                 singlenext = singlebase
                 singlebase = None
             else:
@@ -80,23 +78,16 @@ def main():
                 max_base = len(singlebase)
                 max_next = len(singlenext)
                 if lastdate == None:
-                    print("step 4:")
                     lastdate = singlebase[0][0]
                     pt_base = 0
                 else:
-                    print("step 5:")
                     temp = list(map(lambda x : x[0], singlebase))
                     try:
                         pt_base = temp.index(lastdate) + 1 # start from the next day
                     except:
-                        print("step 9:")
-                        print('can not find')
-                        print(lastdate)
                         # continue
                         break
                     if pt_base >= max_base:
-                        print("step 10:")
-                        print(pt_base, max_base)
                         continue
 
                 print(pt_base, max_base)
@@ -108,21 +99,16 @@ def main():
                         if singlebase[i][7] > singlenext[ind][7]:
                             if i != max_base - 1:
                                 continue
-                            print('step 13: ', td)
                         print('======>    ',singlebase[i][7],singlenext[ind][7])
                     except:
                         if i != max_base-1:
                             continue
-                        print('step 12: ', td)
                     
-                    print("step 6:")
                     if i+1 < max_base:
                         # main contract changed to another contract
                         lastdate = singlenext[ind+1][0]
                         maincontract += singlebase[pt_base:i+1]
-                        print("step 7:", lastdate)
                     else:
-                        print("step 8:")
                         # main contract not finished, need jump out the whole outer loop
                         maincontract += singlebase[pt_base:]
                         singlenext = -1
