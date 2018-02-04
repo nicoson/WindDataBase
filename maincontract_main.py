@@ -70,7 +70,7 @@ def main():
                 singlebase = None
             else:
                 # todo
-                print(singlenext)
+                print(singlenext[0])
 
             
         print('=================> result:')
