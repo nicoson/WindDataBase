@@ -66,11 +66,6 @@ def main():
             singlenext = getConvertTable(tb, db)
 
             if singlebase == -1:
-                print("step last:")
-                if len(maincontract) > 0:
-                    print("Inserting Data for: ", symbol)
-                    db_mc.updateMainContract(symbol, maincontract)
-                    print("Insert complete")
                 break
             elif singlebase == None:
                 print("step 1:")
@@ -133,7 +128,11 @@ def main():
                     break
 
             
-        print('=================> result:')
+        print("step last: insert data")
+        if len(maincontract) > 0:
+            print("Inserting Data for: ", symbol)
+            db_mc.updateMainContract(symbol, maincontract)
+            print("Insert complete")
         # print(maincontract)
         break
 
