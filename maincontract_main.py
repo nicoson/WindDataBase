@@ -110,8 +110,9 @@ def main():
                             print("step 11:")
                             continue
                     except:
+                        if i != max_base-1:
+                            continue
                         print('step 12: ', td)
-                        continue
                     
                     print("step 6:")
                     print('======>    ',singlebase[i][7],singlenext[ind][7])
