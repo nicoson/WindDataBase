@@ -59,8 +59,7 @@ def main():
         maincontract = []
         singlebase = None
         singlenext = None
-        point = 0 if lastdate == None else None
-        print('======> ', ccode, lastdate, point)
+        print('======> ', ccode, lastdate)
         for tb in tablelist:
             singlebase = singlenext
             singlenext = getConvertTable(tb, db)
@@ -91,8 +90,6 @@ def main():
                         continue
 
                 nextdate = list(map(lambda x : x[0], singlenext))
-                pt_next = nextdate.index(lastdate)
-
                 for i in range(pt_base, max_base):
                     td = singlebase[i][0]
                     try:
