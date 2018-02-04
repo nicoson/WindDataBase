@@ -367,7 +367,7 @@ class DBConnect:
 		try:
 			self.cursor.execute(sql)
 			self.db.commit()
-			self.updateMainContractLogTable(symbol, maincontract[0][2], maincontract[0][0], datetime.datetime.now().strftime("%Y-%m-%d"))
+			self.updateMainContractLogTable(symbol, data[0][2], data[0][0], datetime.datetime.now().strftime("%Y-%m-%d"))
 
 		except Exception as e:
 			print("XXXXXXXXXXXXX	insertFutureData issue for main contract: ", symbol)
