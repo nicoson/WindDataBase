@@ -29,7 +29,7 @@ def main():
 
     # update database by using [updatelog] table
     print(currentTime(),"==================> start generating main contract: ")
-    for symbol in symbols[1:]:
+    for symbol in symbols:
         prefix = symbol[:symbol.find('.')].lower()
         print(prefix)
 
@@ -137,7 +137,7 @@ def main():
         else:
             print("No data inserted")
         # print(maincontract)
-        break
+        # break
 
     # job finished, close the db connection
     db.destroy()
