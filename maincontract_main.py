@@ -43,16 +43,39 @@ def main():
         print(tablelist)
 
         # get the info from updatelog to merge the main contract table
-        cinfo = db_mc.getCurrentMainContractBySymbol(symbol)
+        cinfo = db_mc.getCurrentMainContractInfoBySymbol(symbol)
         if cinfo == None:
             ccode, lastdate = [None, None]
         else:
             ccode, lastdate = cinfo
+            try:
+                ind = tablelist.index(ccode)
+                tablelist = tablelist[ind:]
+            except:
+                print(ccode)
+                return
+
+        # generate main contract data list
+        maincontract = []
+        singlebase = None
+        singlenext = None
+        for tb in tablelist:
+            singlebase = singlenext
+            singlenext = getConvertTable(tb, db)
+
+            if singlebase == None:
+                continue
+            else if singlenext == None:
+                singlenext = singlebase
+                singlebase = None
+            else:
+                # todo
+                print(singlenext)
+
+            
+        print('=================> result:')
+        print(maincontract)
         break
-
-        
-
-
 
     # job finished, close the db connection
     db.destroy()
@@ -68,6 +91,12 @@ def sortTableList(tlist):
         break
     tlist = tlist[ind:] + tlist[:ind]
     return tlist
+
+def getConvertTable(symbol, db):
+    singlebase = db.getContractDataBySymbol(symbol)
+    if singlebase != None:
+        singlebase = list(map(lambda x : x[:2] + [symbol] + x[2:], singlebase))
+    return singlebase
 
 if __name__ == "__main__":
     main()

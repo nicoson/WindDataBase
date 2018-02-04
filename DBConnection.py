@@ -301,7 +301,7 @@ class DBConnect:
 			ID bigint(20) primary key NOT NULL auto_increment,
 			lastradeday_s date DEFAULT NULL COMMENT '表示某证券有交易的最新交易日期。',
 			last_trade_day date DEFAULT NULL COMMENT '表示某证券所在市场的最新一个交易日期。',
-			contract_code varchar(20) DEFAULT NULL COMMENT '对应使用的合约‘,
+			contract_code varchar(20) DEFAULT NULL COMMENT '对应使用的合约',
 			open double DEFAULT NULL COMMENT '开盘价',
 			high double DEFAULT NULL COMMENT '最高价',
 			low double DEFAULT NULL COMMENT '最低价',
@@ -326,15 +326,24 @@ class DBConnect:
 			print('==========>  table "' + symbol + '" created!')
 		except Exception as e:
 			print('==========> ' + e)
-			print("  ============>  table '" + symbol + "' already been created!")
+			print("============>  table '" + symbol + "' already been created!")
 		
 		return
 
-	def getCurrentMainContractBySymbol(self, symbol):
+	def getCurrentMainContractInfoBySymbol(self, symbol):
 		sql = "Select current_maincode, last_trade_day from " + self.logTable + """
 			where stock_code = '""" + symbol + "' limit 1;"
 
 		# print(sql)
 		self.cursor.execute(sql)
 		result = self.cursor.fetchone()
+		return result
+
+	def getContractDataBySymbol(self, symbol):
+		sql = """Select lastradeday_s,last_trade_day,open,high,low,close,volume,amt,
+			oi,oi_chg,pre_settle,settle,contractmultiplier,changelt,mfprice from `""" + symbol + "`;"
+
+		# print(sql)
+		self.cursor.execute(sql)
+		result = self.cursor.fetchall()
 		return result
