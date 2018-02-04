@@ -109,7 +109,9 @@ def main():
                     try:
                         ind = nextdate.index(td)
                         if singlebase[i][7] > singlenext[ind][7]:
-                            continue
+                            if i != max_base - 1:
+                                continue
+                            print('step 13: ', td)
                     except:
                         if i != max_base-1:
                             continue
