@@ -353,6 +353,8 @@ class DBConnect:
 		return result
 
 	def updateMainContract(self, symbol, data):
+		cmaincode = data[-1][2]
+		lastTradeDate = str(data[-1][0])
 		data = list(map(lambda datum : tuple([str(datum[0])] + [str(datum[1])] + datum[2:]), data))
 		data = list(map(str, data))
 
@@ -367,7 +369,7 @@ class DBConnect:
 		try:
 			self.cursor.execute(sql)
 			self.db.commit()
-			self.updateMainContractLogTable(symbol, data[0][2], data[0][0], datetime.datetime.now().strftime("%Y-%m-%d"))
+			self.updateMainContractLogTable(symbol, cmaincode, lastTradeDate, datetime.datetime.now().strftime("%Y-%m-%d"))
 
 		except Exception as e:
 			print("XXXXXXXXXXXXX	insertFutureData issue for main contract: ", symbol)
