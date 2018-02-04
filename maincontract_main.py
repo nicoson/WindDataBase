@@ -126,7 +126,7 @@ def main():
                         print("step 8:")
                         # main contract not finished, need jump out the whole outer loop
                         maincontract += singlebase[pt_base:]
-                        singlebase = -1
+                        singlenext = -1
                     break
 
             
