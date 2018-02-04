@@ -110,7 +110,7 @@ def main():
                             print("step 11:")
                             continue
                     except:
-                        print('step 12:')
+                        print('step 12: ', td)
                         continue
                     
                     print("step 6:")
