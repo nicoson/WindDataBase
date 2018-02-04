@@ -92,8 +92,13 @@ def main():
                     try:
                         pt_base = temp.index(lastdate) + 1 # start from the next day
                     except:
+                        print("step 9:")
+                        print('can not find')
+                        print(lastdate)
                         continue
                     if pt_base >= max_base:
+                        print("step 10:")
+                        print(pt_base, max_base)
                         continue
 
                 nextdate = list(map(lambda x : x[0], singlenext))
@@ -109,10 +114,12 @@ def main():
                     print("step 6:")
                     print('======>    ',singlebase[i][7],singlenext[ind][7])
                     if i+1 < max_base:
+                        print("step 7:")
                         # main contract changed to another contract
                         lastdate = singlebase[i+1][0]
                         maincontract += singlebase[pt_base:i+1]
                     else:
+                        print("step 8:")
                         # main contract not finished, need jump out the whole outer loop
                         maincontract += singlebase[pt_base:]
                         singlebase = -1
