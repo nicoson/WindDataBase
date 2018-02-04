@@ -352,7 +352,7 @@ class DBConnect:
 		result = self.cursor.fetchall()
 		return result
 
-	def updateMainContract(self, symbol, maincontract):
+	def updateMainContract(self, symbol, data):
 		data[0] = list(map(str, data[0]))
 		data[1] = list(map(str, data[1]))
 		data = list(tuple(i) for i in zip(*data))
@@ -365,6 +365,7 @@ class DBConnect:
 		sql = sql.replace("'None'", 'null')	# for date column
 		sql = sql.replace('None', 'null')
 
+		print(sql)
 		try:
 			self.cursor.execute(sql)
 			self.db.commit()
@@ -373,7 +374,7 @@ class DBConnect:
 		except Exception as e:
 			print("XXXXXXXXXXXXX	insertFutureData issue for stock: ", symbol)
 
-	def updateMainContractLogTable(symbol, cmaincode, ltd, lastModified):
+	def updateMainContractLogTable(self, symbol, cmaincode, ltd, lastModified):
 		print("=========> " + symbol)
 		sql = "INSERT INTO " + self.logTable + " VALUES('" + symbol + "', '" + cmaincode \
 			+ "', '" + ltd + "', '" + lastModified + "') ON DUPLICATE KEY UPDATE stock_code='" + symbol \

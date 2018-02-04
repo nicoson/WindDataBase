@@ -106,9 +106,7 @@ def main():
                     td = singlebase[i][0]
                     try:
                         ind = nextdate.index(td)
-                        print("step 11: ", td)
                         if singlebase[i][7] > singlenext[ind][7]:
-                            print("step 13: ", td)
                             continue
                     except:
                         if i != max_base-1:
@@ -131,7 +129,7 @@ def main():
 
             
         print('=================> result:')
-        print(maincontract)
+        # print(maincontract)
         break
 
     # job finished, close the db connection
