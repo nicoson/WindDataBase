@@ -103,6 +103,7 @@ def main():
                         print(pt_base, max_base)
                         continue
 
+                print(pt_base, max_base)
                 nextdate = list(map(lambda x : x[0], singlenext))
                 for i in range(pt_base, max_base):
                     td = singlebase[i][0]
