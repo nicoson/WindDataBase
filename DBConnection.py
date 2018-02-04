@@ -353,7 +353,7 @@ class DBConnect:
 		return result
 
 	def updateMainContract(self, symbol, data):
-		# data = list(map(lambda datum : [str(datum[0])] + [str(datum[1])] + datum[2:], data))
+		data = list(map(lambda datum : tuple([str(datum[0])] + [str(datum[1])] + datum[2:]), data))
 		data = list(map(str, data))
 
 		sql = ','.join(data)
@@ -370,7 +370,8 @@ class DBConnect:
 			self.updateMainContractLogTable(symbol, maincontract[0][2], maincontract[0][0], datetime.datetime.now().strftime("%Y-%m-%d"))
 
 		except Exception as e:
-			print("XXXXXXXXXXXXX	insertFutureData issue for stock: ", symbol)
+			print("XXXXXXXXXXXXX	insertFutureData issue for main contract: ", symbol)
+			print(e)
 
 	def updateMainContractLogTable(self, symbol, cmaincode, ltd, lastModified):
 		print("=========> " + symbol)
