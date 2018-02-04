@@ -109,13 +109,13 @@ def main():
                             if i != max_base - 1:
                                 continue
                             print('step 13: ', td)
+                        print('======>    ',singlebase[i][7],singlenext[ind][7])
                     except:
                         if i != max_base-1:
                             continue
                         print('step 12: ', td)
                     
                     print("step 6:")
-                    print('======>    ',singlebase[i][7],singlenext[ind][7])
                     if i+1 < max_base:
                         # main contract changed to another contract
                         lastdate = singlenext[ind+1][0]
@@ -156,9 +156,9 @@ def sortTableList(tlist):
 
 def getConvertTable(symbol, db):
     singlebase = db.getContractDataBySymbol(symbol)
-    if singlebase != None:
+    if len(singlebase) > 0:
         singlebase = list(map(lambda x : list(x[:2]) + [symbol] + list(x[2:]), singlebase))
-    return singlebase
+    return None
 
 if __name__ == "__main__":
     main()
