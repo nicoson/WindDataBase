@@ -92,7 +92,8 @@ def main():
                         print("step 9:")
                         print('can not find')
                         print(lastdate)
-                        continue
+                        # continue
+                        break
                     if pt_base >= max_base:
                         print("step 10:")
                         print(pt_base, max_base)
@@ -133,6 +134,8 @@ def main():
             print("Inserting Data for: ", symbol)
             db_mc.updateMainContract(symbol, maincontract)
             print("Insert complete")
+        else:
+            print("No data inserted")
         # print(maincontract)
         break
 
