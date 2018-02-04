@@ -29,7 +29,7 @@ def main():
 
     # update database by using [updatelog] table
     print(currentTime(),"==================> start generating main contract: ")
-    for symbol in symbols:
+    for symbol in symbols[1:]:
         prefix = symbol[:symbol.find('.')].lower()
         print(prefix)
 
@@ -94,8 +94,12 @@ def main():
                     try:
                         pt_base = temp.index(lastdate) + 1 # start from the next day
                     except:
+                        print("step 9:")
+                        print('can not find')
+                        print(lastdate)
                         continue
                     if pt_base >= max_base:
+                        print("step 10:")
                         print(pt_base, max_base)
                         continue
 
@@ -126,9 +130,9 @@ def main():
                     break
 
             
-        # print('=================> result:')
+        print('=================> result:')
         # print(maincontract)
-        # break
+        break
 
     # job finished, close the db connection
     db.destroy()
