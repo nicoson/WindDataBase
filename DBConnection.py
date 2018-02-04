@@ -299,8 +299,9 @@ class DBConnect:
 		# 使用预处理语句创建表
 		sql = "CREATE TABLE IF NOT EXISTS `" + symbol + """` (
 			ID bigint(20) primary key NOT NULL auto_increment,
-			lastradeday_s date DEFAULT NULL COMMENT ' 表示某证券有交易的最新交易日期。',
+			lastradeday_s date DEFAULT NULL COMMENT '表示某证券有交易的最新交易日期。',
 			last_trade_day date DEFAULT NULL COMMENT '表示某证券所在市场的最新一个交易日期。',
+			contract_code varchar(20) DEFAULT NULL COMMENT '对应使用的合约‘,
 			open double DEFAULT NULL COMMENT '开盘价',
 			high double DEFAULT NULL COMMENT '最高价',
 			low double DEFAULT NULL COMMENT '最低价',
@@ -311,8 +312,6 @@ class DBConnect:
 			oi_chg double DEFAULT NULL COMMENT ' 持仓量变化',
 			pre_settle double DEFAULT NULL COMMENT ' 前结算价',
 			settle double DEFAULT NULL COMMENT '结算价',
-			susp_reason varchar(200) DEFAULT NULL COMMENT '证券于某交易日停牌的原因。',
-			close3 double DEFAULT NULL COMMENT '指定交易日的收盘价，若无成交则返回为空。',
 			contractmultiplier double DEFAULT NULL COMMENT '合约乘数',
 			changelt double DEFAULT NULL COMMENT '涨跌幅限制',
 			mfprice varchar(50) DEFAULT NULL COMMENT '最小变动价位',

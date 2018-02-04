@@ -50,6 +50,8 @@ def main():
             ccode, lastdate = cinfo
         break
 
+        
+
 
 
     # job finished, close the db connection
