@@ -101,7 +101,7 @@ def main():
                     
                     if i+1 < max_base:
                         # main contract changed to another contract
-                        lastdate = single
+                        lastdate = singlebase[i+1][0]
                         maincontract += singlebase[pt_base:i+1]
                     else:
                         # main contract not finished, need jump out the whole outer loop
