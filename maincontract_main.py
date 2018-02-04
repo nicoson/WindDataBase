@@ -107,17 +107,19 @@ def main():
                     try:
                         ind = nextdate.index(td)
                         if singlebase[i][7] > singlenext[ind][7]:
+                            print("step 11:")
                             continue
                     except:
+                        print('step 12:')
                         continue
                     
                     print("step 6:")
                     print('======>    ',singlebase[i][7],singlenext[ind][7])
                     if i+1 < max_base:
-                        print("step 7:")
                         # main contract changed to another contract
-                        lastdate = singlebase[i+1][0]
+                        lastdate = singlenext[ind+1][0]
                         maincontract += singlebase[pt_base:i+1]
+                        print("step 7:", lastdate)
                     else:
                         print("step 8:")
                         # main contract not finished, need jump out the whole outer loop
