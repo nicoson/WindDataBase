@@ -65,7 +65,7 @@ def main():
 
             if singlebase == None:
                 continue
-            else if singlenext == None:
+            elif singlenext == None:
                 singlenext = singlebase
                 singlebase = None
             else:
