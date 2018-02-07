@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 #
 # sample:
-# > python3 main_future.py --history=true
+# > python3 main_contract.py --history=true
 # ==============================================================================
 
 import argparse
