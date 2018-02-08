@@ -52,7 +52,9 @@ def getConvertTable(symbol, db):
     singlebase = db.getContractDataBySymbol(symbol)
     if len(singlebase) > 0:
         singlebase = list(map(lambda x : list(x[:2]) + [symbol] + list(x[2:]), singlebase))
-    return None
+    else:
+        singlebase = None
+    return singlebase
 
 def generateMainContract(symbol, db, db_mc):
     # =========================================
