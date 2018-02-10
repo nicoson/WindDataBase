@@ -76,7 +76,8 @@ class WindStock:
 
     def getFutureData(self, symbol, start_date):
         w.start()
-        end_date = min(datetime.datetime.today()-datetime.timedelta(1), datetime.datetime.strptime(start_date,'%Y-%m-%d'))
+        end_date = self.getEndDate(symbol)
+        end_date = min(datetime.datetime.today()-datetime.timedelta(1), datetime.datetime.strptime(end_date,'%Y-%m-%d'))
         print(start_date, end_date)
         try:
             stock = w.wsd(symbol, """lastradeday_s,last_trade_day,open,high,low,close,volume,amt,oi,oi_chg,
@@ -91,3 +92,12 @@ class WindStock:
             print ( "XXXXXXXXXXXXXXXXXXXX    ", symbol )
             print ( "XXXXXXXXXXXXXXXXXXXX    ", datetime.datetime.now().strftime("%Y-%m-%d-%H"), ": SQL Exception :%s" % (e) )
             return None
+
+    def getEndDate(self, symbol):
+        year = re.sub(r'[a-zA-Z.]+', '', symbol)[:2]
+        if year[0] == '9':
+            year = int(year) + 1900
+        else:
+            year = int(year) + 2000
+        year = str(year) + '-12-31'
+        return year
