@@ -152,7 +152,7 @@ class DBConnect:
 		result = self.cursor.fetchone()
 		# print(result)
 		if result == None:
-			startDate = getInitDate(symbol)
+			startDate = self.getInitDate(symbol)
 			print(startDate)
 			self.updateLogTable(symbol, startDate)
 
