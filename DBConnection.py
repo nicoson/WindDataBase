@@ -152,7 +152,18 @@ class DBConnect:
 		result = self.cursor.fetchone()
 		# print(result)
 		if result == None:
-			self.updateLogTable(symbol)
+			startDate = getInitDate(symbol)
+			print(startDate)
+			self.updateLogTable(symbol, startDate)
+
+	def getInitDate(self, symbol):
+		daystr = re.sub(r'[a-zA-Z.]+', '', symbol)[:2]
+		if daystr[0] == '9':
+			daystr = max(int(daystr) + 1900 - 3, 1990)
+		else:
+			daystr = int(daystr) + 2000 - 3
+		daystr = str(daystr) + '-01-01'	# convert all year to 2000+
+		return daystr
 
 	def updateLogTable(self, symbol, lastModified = INITDATE):
 		print("=========> " + symbol)

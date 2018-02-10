@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
+# for downloading contracts from wind platform
 #
 # sample:
 # > python3 main_contract.py --history=true

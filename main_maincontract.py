@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
+# Used for merging the contracts for get main contract
 #
 # sample:
 # > python3 maincontract_main.py
