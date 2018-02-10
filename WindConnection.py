@@ -76,10 +76,12 @@ class WindStock:
 
     def getFutureData(self, symbol, start_date):
         w.start()
+        end_date = min(datetime.datetime.today()-datetime.timedelta(1), datetime.datetime.strptime(start_date,'%Y-%m-%d'))
+        print(start_date, end_date)
         try:
             stock = w.wsd(symbol, """lastradeday_s,last_trade_day,open,high,low,close,volume,amt,oi,oi_chg,
                 pre_settle,settle,susp_reason,close3,contractmultiplier,changelt,
-                mfprice""", start_date, (datetime.datetime.today()-datetime.timedelta(1)).strftime("%Y-%m-%d"))
+                mfprice""", start_date, end_date.strftime("%Y-%m-%d"))
             if stock.ErrorCode == 0:
                 return(stock.Data)
             else:
