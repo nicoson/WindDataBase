@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 import pymysql
-import datetime,time
+import datetime,time,re
 
 # start date for loading the data from wind
 INITDATE = '2015-01-01'
