@@ -21,7 +21,7 @@ class DBConnect:
 
 	def createUpdateLogTable(self):
 		sql = "CREATE TABLE IF NOT EXISTS " + self.logTable + """ (
-			stock_code varchar(10) NOT NULL UNIQUE KEY COMMENT '股票代码',
+			stock_code varchar(16) NOT NULL UNIQUE KEY COMMENT '股票代码',
 			last_modified datetime NOT NULL DEFAULT '""" + INITDATE + """' COMMENT '最后同步日期'
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8"""
 
@@ -295,7 +295,7 @@ class DBConnect:
 	# create log table for the 1st time
 	def createUpdateLogTable4MainContract(self):
 		sql = "CREATE TABLE IF NOT EXISTS " + self.logTable + """ (
-			stock_code varchar(10) NOT NULL UNIQUE KEY COMMENT '代码',
+			stock_code varchar(16) NOT NULL UNIQUE KEY COMMENT '代码',
 			current_maincode varchar(20) NOT NULL COMMENT '当前主力合约',
 			last_trade_day datetime NOT NULL DEFAULT '1990-01-01' COMMENT '最新日期',
 			updated_date datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新日期'
