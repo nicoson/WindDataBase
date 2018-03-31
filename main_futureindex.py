@@ -54,7 +54,7 @@ def getConvertTable(symbol, db):
     data = db.getContractDataBySymbol(symbol)
     if len(data) > 0:
         # [date, price, volumn, turnover amount, open interest]
-        data = list(map(lambda x : [x[0]] + list(x[5:9]), data))
+        data = list(map(lambda x : [x[0]] + [x[5]] + [x[6] if x[6] != None else 0] + [x[7] if x[7] != None else 0] + [x[8] if x[8] != None else 0], data))
     else:
         data = None
     return data
@@ -113,20 +113,21 @@ def generateMainContract(symbol, db, db_mc):
             flag = True
             
             while flag:
-                print(indexList[indall][0], data[indnew][0])
-
                 if indexList[indall][0] < data[indnew][0]:
                     indall += 1
                 elif indexList[indall][0] == data[indnew][0]:
+                    if indexList[indall][1] == None:
+                        indexList[indall][1] == indexList[indall-1][1]
+                    if data[indnew][1] == None:
+                        data[indnew][1] == data[indnew-1][1]
+
                     w1 = 2/3 * indexList[indall][2] + 1/3 * indexList[indall][4]
                     w2 = 2/3 * data[indnew][2] + 1/3 * data[indnew][4]
 
                     indexList[indall][1] = indexList[indall][1] * w1 / (w1 + w2) + data[indnew][1] * w2 / (w1 + w2)   # setup price
                     indexList[indall][2] = indexList[indall][2] + data[indnew][2]
+                    indexList[indall][3] = indexList[indall][3] + data[indnew][3]
                     indexList[indall][4] = indexList[indall][4] + data[indnew][4]
-
-                    if indexList[indall][3] != None:    # amt could be None
-                        indexList[indall][3] = indexList[indall][3] + data[indnew][3]
 
                     indall += 1
                     indnew += 1
@@ -138,7 +139,6 @@ def generateMainContract(symbol, db, db_mc):
                         maxall += 1
                     pass
 
-                print(indall, indnew)
                 input("input:")
                 if indall == maxall and indnew < maxnew:
                     indexList += data[indnew:]
