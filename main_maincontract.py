@@ -144,7 +144,7 @@ def generateMainContract(symbol, db, db_mc):
                     if i != max_base-1:
                         continue
                 
-                if i+1 < max_base:
+                if i+1 < max_base and ind+1 < max_next:
                     # main contract changed to another contract
                     lastdate = singlenext[ind+1][1]
                     maincontract += singlebase[pt_base:i+1]
