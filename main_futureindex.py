@@ -108,7 +108,8 @@ def generateindex(symbol, db, db_mc):
                     w1 = 2/3 * indexList[indall][2] + 1/3 * indexList[indall][4]
                     w2 = 2/3 * data[indnew][2] + 1/3 * data[indnew][4]
 
-                    indexList[indall][1] = indexList[indall][1] * w1 / (w1 + w2) + data[indnew][1] * w2 / (w1 + w2)   # setup price
+                    if (w1 + w2) != 0:
+                        indexList[indall][1] = indexList[indall][1] * w1 / (w1 + w2) + data[indnew][1] * w2 / (w1 + w2)   # setup price
                     indexList[indall][2] = indexList[indall][2] + data[indnew][2]
                     indexList[indall][3] = indexList[indall][3] + data[indnew][3]
                     indexList[indall][4] = indexList[indall][4] + data[indnew][4]
