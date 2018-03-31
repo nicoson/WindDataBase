@@ -136,10 +136,10 @@ def generateMainContract(symbol, db, db_mc):
                 td = singlebase[i][0]
                 try:
                     ind = nextdate.index(td)
-                    if singlebase[i][7] > singlenext[ind][7]:
+                    if singlebase[i][6] > singlenext[ind][6]:
                         if i != max_base - 1:
                             continue
-                    print('======>    ',singlebase[i][7],singlenext[ind][7])
+                    print('======>    ',singlebase[i][6],singlenext[ind][6])
                 except:
                     if i != max_base-1:
                         continue
