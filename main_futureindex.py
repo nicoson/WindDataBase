@@ -140,7 +140,7 @@ def generateMainContract(symbol, db, db_mc):
 
                 print(indall, indnew)
                 input("input:")
-                if indall > maxall and indnew < maxnew:
+                if indall == maxall and indnew < maxnew:
                     indexList += data[indnew:]
                     flag = False
 
