@@ -28,7 +28,7 @@ def main():
     db = DBConnect("localhost","root","root","future_l2")   # database for level 2 data for future
     db_mc = DBConnect("localhost","root","root","securityindex")   # database for main contract
     #db_mc.createUpdateLogTable4MainContract()
-    db_mc.createMainContractTables(symbols)
+    db_mc.createContractIndexTables(symbols)
 
     # update database by using [updatelog] table
     print(currentTime(),"==================> start generating main contract: ")
@@ -74,7 +74,6 @@ def generateMainContract(symbol, db, db_mc):
     if tablelist == None:
         return
     tablelist = sortTableList(tablelist)
-    print(tablelist)
 
 
     # =========================================
@@ -129,7 +128,6 @@ def generateMainContract(symbol, db, db_mc):
                         indexList += data[indnew:]
                     flag = False
 
-    print(indexList)
 
     print("step last: insert data")
     if len(indexList) > 0:
