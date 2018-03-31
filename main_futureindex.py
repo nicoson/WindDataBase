@@ -55,6 +55,12 @@ def getConvertTable(symbol, db):
     if len(data) > 0:
         # [date, price, volumn, turnover amount, open interest]
         data = list(map(lambda x : [x[1]] + [x[5]] + [x[6] if x[6] != None else 0] + [x[7] if x[7] != None else 0] + [x[8] if x[8] != None else 0], data))
+        datum = 0
+        for i in data:  # auto fill close price
+            if i[1] == None:
+                i[1] = datum
+            else:
+                datum = i[1]
     else:
         data = None
     return data
