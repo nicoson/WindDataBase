@@ -91,10 +91,10 @@ def generateindex(symbol, db, db_mc):
     for tb in tablelist:
         print('==========>   ', tb)
         data = getConvertTable(tb, db)
-        if len(indexList) == 0:
-            indexList += data
-        elif data == None:
+        if data == None:
             pass
+        elif len(indexList) == 0:
+            indexList += data
         else:
             indall = 0
             maxall = len(indexList)
