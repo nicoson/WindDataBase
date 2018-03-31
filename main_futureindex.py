@@ -33,7 +33,7 @@ def main():
     # update database by using [updatelog] table
     print(currentTime(),"==================> start generating main contract: ")
     for symbol in symbols:
-        generateMainContract(symbol, db, db_mc)
+        generateindex(symbol, db, db_mc)
 
     # job finished, close the db connection
     db.destroy()
@@ -59,7 +59,7 @@ def getConvertTable(symbol, db):
         data = None
     return data
 
-def generateMainContract(symbol, db, db_mc):
+def generateindex(symbol, db, db_mc):
     # =========================================
     # step 1: 
     #   get the related contracts from L2 db
@@ -117,7 +117,7 @@ def generateMainContract(symbol, db, db_mc):
                     indnew += 1
                 else:
                     if indall <= maxall:
-                        indexList = indexList[:indall] + data[indnew] + indexList[indall]
+                        indexList = indexList[:indall] + [data[indnew]] + indexList[indall:]
                         indall += 1
                         indnew += 1
                         maxall += 1
