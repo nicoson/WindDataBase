@@ -27,7 +27,7 @@ def main():
     # create tables for new category
     db = DBConnect("localhost","root","root","future_l2")   # database for level 2 data for future
     db_mc = DBConnect("localhost","root","root","securityindex")   # database for main contract
-    db_mc.createUpdateLogTable4MainContract()
+    #db_mc.createUpdateLogTable4MainContract()
     db_mc.createMainContractTables(symbols)
 
     # update database by using [updatelog] table
@@ -76,27 +76,10 @@ def generateMainContract(symbol, db, db_mc):
     tablelist = sortTableList(tablelist)
     print(tablelist)
 
-    # =========================================
-    # step 2:
-    #   get the history merge info from maincontract database
-    # =========================================
-    # get the info from updatelog to merge the main contract table
-    
-    # cinfo = db_mc.getCurrentMainContractInfoBySymbol(symbol)
-    # if cinfo == None:
-    #     ccode, lastdate = [None, None]
-    # else:
-    #     ccode, lastdate = cinfo
-    #     try:
-    #         ind = tablelist.index(ccode)
-    #         tablelist = tablelist[ind:]
-    #     except:
-    #         print(ccode)
-    #         return
 
     # =========================================
-    # step 3:
-    #   generate/update main contract table
+    # step 2:
+    #   generate/update contract index table
     # =========================================
     # generate main contract data list
     indexList = []
@@ -105,7 +88,7 @@ def generateMainContract(symbol, db, db_mc):
         data = getConvertTable(tb, db)
         if len(indexList) == 0:
             indexList += data
-        elif len(data) == 0:
+        elif data == None:
             pass
         else:
             indall = 0
@@ -141,78 +124,22 @@ def generateMainContract(symbol, db, db_mc):
                         maxall += 1
                     pass
 
-                #input("input:")
-                if indall == maxall and indnew < maxnew:
-                    indexList += data[indnew:]
+                if indall == maxall:
+                    if indnew < maxnew:
+                        indexList += data[indnew:]
                     flag = False
 
     print(indexList)
 
+    print("step last: insert data")
+    if len(indexList) > 0:
+        print("Inserting Data for: ", symbol)
+        db_mc.updateContractIndex(symbol, indexList)
+        print("Insert complete")
+    else:
+        print("No data inserted")
 
-    #     singlebase = singlenext
-    #     singlenext = getConvertTable(tb, db)
 
-    #     if singlebase == -1:
-    #         break
-    #     elif singlebase == None:
-    #         continue
-    #     elif singlenext == None:
-    #         singlenext = singlebase
-    #         singlebase = None
-    #     else:
-    #         # todo
-    #         print("step 3:")
-    #         max_base = len(singlebase)
-    #         max_next = len(singlenext)
-    #         if lastdate == None:
-    #             lastdate = singlebase[0][0]
-    #             pt_base = 0
-    #         else:
-    #             temp = list(map(lambda x : x[0], singlebase))
-    #             try:
-    #                 pt_base = temp.index(lastdate) + 1 # start from the next day
-    #             except:
-    #                 # continue
-    #                 break
-    #             if pt_base >= max_base:
-    #                 continue
-
-    #         print(pt_base, max_base)
-    #         nextdate = list(map(lambda x : x[0], singlenext))
-    #         for i in range(pt_base, max_base):
-    #             td = singlebase[i][0]
-    #             try:
-    #                 ind = nextdate.index(td)
-    #                 if singlebase[i][7] > singlenext[ind][7]:
-    #                     if i != max_base - 1:
-    #                         continue
-    #                 print('======>    ',singlebase[i][7],singlenext[ind][7])
-    #             except:
-    #                 if i != max_base-1:
-    #                     continue
-                
-    #             if i+1 < max_base:
-    #                 # main contract changed to another contract
-    #                 lastdate = singlenext[ind+1][0]
-    #                 maincontract += singlebase[pt_base:i+1]
-    #             else:
-    #                 # main contract not finished, need jump out the whole outer loop
-    #                 # here is one little concern:
-    #                 #   if the next contract won't be the main, and the next next one will be the main, then
-    #                 #   in this case, the process will be collapsed
-    #                 maincontract += singlebase[pt_base:]
-    #                 singlenext = -1
-    #             break
-
-    # print("step last: insert data")
-    # if len(maincontract) > 0:
-    #     print("Inserting Data for: ", symbol)
-    #     db_mc.updateMainContract(symbol, maincontract)
-    #     print("Insert complete")
-    # else:
-    #     print("No data inserted")
-    # # print(maincontract)
-    # # break
 
 if __name__ == "__main__":
     main()

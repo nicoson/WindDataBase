@@ -279,7 +279,7 @@ class DBConnect:
 
 
 	# ===============================================
-	# db code for maincontract_main
+	# db code for main_maincontract
 	#
 	# Algorithm:
 	# 	通过在updatelog中记录contract_code和last_trade_day来实现
@@ -399,3 +399,59 @@ class DBConnect:
 			self.db.commit()
 		except Exception as e:
 			print("XXXXXXXXXXXXX	updateMainContractLogTable issue: ", e)
+
+
+
+	# ===============================================
+	# db code for main_futureindex
+	#
+	# Algorithm:
+	#
+	# ===============================================
+	def createContractIndexTables(self, symbols):
+		for symbol in symbols:
+			self.createContractIndexSingleTable(symbol)
+
+	def createContractIndexSingleTable(self, symbol):
+		# create level 2 daily data set table for future
+		# 使用预处理语句创建表
+		sql = "CREATE TABLE IF NOT EXISTS `" + symbol + """` (
+			ID bigint(20) primary key NOT NULL auto_increment,
+			last_trade_day date DEFAULT NULL COMMENT '表示某证券所在市场的最新一个交易日期。',
+			close double DEFAULT NULL COMMENT ' 收盘价,证券在交易日所在指定周期的最后一条行情数据中的收盘价',
+			volume double DEFAULT NULL COMMENT '成交量',
+			amt double DEFAULT NULL COMMENT '成交金额',
+			oi double DEFAULT NULL COMMENT '持仓量',
+			created_date datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建日期',
+			updated_date datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新日期'
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8"""
+		
+		try:
+			# print(sql)
+			self.cursor.execute(sql)
+			self.db.commit()
+			print('==========>  table "' + symbol + '" created!')
+		except Exception as e:
+			print('==========> ', e)
+			print("============>  table '" + symbol + "' already been created!")
+		
+		return
+
+	def updateContractIndex(self, symbol, data):
+		data = list(map(lambda datum : tuple([str(datum[0])] + datum[1:]), data))
+		data = list(map(str, data))
+
+		sql = ','.join(data)
+		sql = "INSERT INTO `" + symbol + """` (last_trade_day,
+		close,volume,amt,oi) VALUES""" + sql
+		sql = sql.replace("'None'", 'null')	# for date column
+		sql = sql.replace('None', 'null')
+
+		# print(sql)
+		try:
+			self.cursor.execute(sql)
+			self.db.commit()
+			
+		except Exception as e:
+			print("XXXXXXXXXXXXX	insert Future Index Data issue for contract: ", symbol)
+			print(e)
