@@ -21,7 +21,7 @@ def main():
     # get category list
     symbols = ws.getCateFutureCodes()    # for history data codes
     symbols = list(filter(lambda sym:sym.find('(') == -1, symbols))
-    # symbols = symbols[0:3]    # test case
+    symbols = symbols[0:3]    # test case
 
     # create tables for new category
     db = DBConnect("localhost","root","root","future_l2")   # database for level 2 data for future
@@ -102,17 +102,16 @@ def generateMainContract(symbol, db, db_mc):
     print('======> ', ccode, lastdate)
     for tind, tb in enumerate(tablelist):
         print('==========>   ', tb)
-        nextset = getConvertTable(tablelist[0], db)
+        nextset = getConvertTable(tb, db)
 
         if nextset == None:
             continue
         elif baseset == None:
             baseset = nextset
-            basedate = [x[1] for x in baseset]
             lastindex = 0
 
             if lastdate != None:
-                lastindex = [index for index,x in enumerate(basedate) if x[1] > lastdate]
+                lastindex = [index for index,x in enumerate(baseset) if x[1] > lastdate]
                 if len(lastindex) == 0:
                     continue
                 else:
@@ -124,15 +123,18 @@ def generateMainContract(symbol, db, db_mc):
             
         else:
             flag = True
+            indbase = 0
+            indnext = 0
+            maxbase = len(baseset)
+            maxnext = len(nextset)
             while flag:
-                indbase = 0
-                indnext = 0
-                maxbase = len(baseset)
-                maxnext = len(nextset)
+                #print(indbase,maxbase,indnext,maxnext)
+                #print(baseset[indbase][1], nextset[indnext][1])
                 if baseset[indbase][1] < nextset[indnext][1]:
                     indbase += 1
                 elif baseset[indbase][1] == nextset[indnext][1]:
-                    if baseset[indbase][6] >= nextset[indnext][6]:
+                    #print(baseset[indbase][7], nextset[indnext][7])
+                    if baseset[indbase][7] == None or nextset[indnext][7] == None or baseset[indbase][7] >= nextset[indnext][7]:
                         indbase += 1
                         indnext += 1
                     else:
