@@ -54,7 +54,7 @@ def getConvertTable(symbol, db):
     data = db.getContractDataBySymbol(symbol)
     if len(data) > 0:
         # [date, price, volumn, turnover amount, open interest]
-        data = list(map(lambda x : [x[0]] + [x[5]] + [x[6] if x[6] != None else 0] + [x[7] if x[7] != None else 0] + [x[8] if x[8] != None else 0], data))
+        data = list(map(lambda x : [x[1]] + [x[5]] + [x[6] if x[6] != None else 0] + [x[7] if x[7] != None else 0] + [x[8] if x[8] != None else 0], data))
     else:
         data = None
     return data
@@ -120,6 +120,8 @@ def generateMainContract(symbol, db, db_mc):
                         indexList[indall][1] == indexList[indall-1][1]
                     if data[indnew][1] == None:
                         data[indnew][1] == data[indnew-1][1]
+                    print(indexList[indall])
+                    print(data[indnew])
 
                     w1 = 2/3 * indexList[indall][2] + 1/3 * indexList[indall][4]
                     w2 = 2/3 * data[indnew][2] + 1/3 * data[indnew][4]
@@ -139,7 +141,7 @@ def generateMainContract(symbol, db, db_mc):
                         maxall += 1
                     pass
 
-                input("input:")
+                #input("input:")
                 if indall == maxall and indnew < maxnew:
                     indexList += data[indnew:]
                     flag = False
