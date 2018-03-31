@@ -118,10 +118,10 @@ def generateMainContract(symbol, db, db_mc):
             max_base = len(singlebase)
             max_next = len(singlenext)
             if lastdate == None:
-                lastdate = singlebase[0][0]
+                lastdate = singlebase[0][1]
                 pt_base = 0
             else:
-                temp = list(map(lambda x : x[0], singlebase))
+                temp = list(map(lambda x : x[1], singlebase))
                 try:
                     pt_base = temp.index(lastdate) + 1 # start from the next day
                 except:
@@ -131,9 +131,9 @@ def generateMainContract(symbol, db, db_mc):
                     continue
 
             print(pt_base, max_base)
-            nextdate = list(map(lambda x : x[0], singlenext))
+            nextdate = list(map(lambda x : x[1], singlenext))
             for i in range(pt_base, max_base):
-                td = singlebase[i][0]
+                td = singlebase[i][1]
                 try:
                     ind = nextdate.index(td)
                     if singlebase[i][6] > singlenext[ind][6]:
@@ -146,7 +146,7 @@ def generateMainContract(symbol, db, db_mc):
                 
                 if i+1 < max_base:
                     # main contract changed to another contract
-                    lastdate = singlenext[ind+1][0]
+                    lastdate = singlenext[ind+1][1]
                     maincontract += singlebase[pt_base:i+1]
                 else:
                     # main contract not finished, need jump out the whole outer loop
