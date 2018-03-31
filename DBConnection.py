@@ -406,7 +406,7 @@ class DBConnect:
 	# db code for main_futureindex
 	#
 	# Algorithm:
-	#
+	#	Always overwrite the old table with newly calculated values
 	# ===============================================
 	def createContractIndexTables(self, symbols):
 		for symbol in symbols:
@@ -415,7 +415,7 @@ class DBConnect:
 	def createContractIndexSingleTable(self, symbol):
 		# create level 2 daily data set table for future
 		# 使用预处理语句创建表
-		sql = "CREATE TABLE IF NOT EXISTS `" + symbol + """` (
+		sql = "DROP TABLE IF EXISTS `" + symbol + "`; CREATE TABLE IF NOT EXISTS `" + symbol + """` (
 			ID bigint(20) primary key NOT NULL auto_increment,
 			last_trade_day date DEFAULT NULL COMMENT '表示某证券所在市场的最新一个交易日期。',
 			close double DEFAULT NULL COMMENT ' 收盘价,证券在交易日所在指定周期的最后一条行情数据中的收盘价',
