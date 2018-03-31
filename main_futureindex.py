@@ -127,6 +127,8 @@ def generateMainContract(symbol, db, db_mc):
                     if indnew < maxnew:
                         indexList += data[indnew:]
                     flag = False
+                elif indnew == maxnew:
+                    flag = False
 
 
     print("step last: insert data")
