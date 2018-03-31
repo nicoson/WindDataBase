@@ -105,6 +105,8 @@ def generateMainContract(symbol, db, db_mc):
         data = getConvertTable(tb, db)
         if len(indexList) == 0:
             indexList += data
+        elif len(data) == 0:
+            pass
         else:
             indall = 0
             maxall = len(indexList)
