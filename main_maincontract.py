@@ -97,65 +97,65 @@ def generateMainContract(symbol, db, db_mc):
     # =========================================
     # generate main contract data list
     maincontract = []
-    singlebase = None
-    singlenext = None
+    baseset = None
+    nextset = None
     print('======> ', ccode, lastdate)
-    for tb in tablelist:
+    for tind, tb in enumerate(tablelist):
         print('==========>   ', tb)
-        singlebase = singlenext
-        singlenext = getConvertTable(tb, db)
+        nextset = getConvertTable(tablelist[0], db)
 
-        if singlebase == -1:
-            break
-        elif singlebase == None:
+        if nextset == None:
             continue
-        elif singlenext == None:
-            singlenext = singlebase
-            singlebase = None
-        else:
-            # todo
-            print("step 3:")
-            max_base = len(singlebase)
-            max_next = len(singlenext)
-            if lastdate == None:
-                lastdate = singlebase[0][1]
-                pt_base = 0
-            else:
-                temp = list(map(lambda x : x[1], singlebase))
-                try:
-                    pt_base = temp.index(lastdate) + 1 # start from the next day
-                except:
-                    # continue
-                    break
-                if pt_base >= max_base:
-                    continue
+        elif baseset == None:
+            baseset = nextset
+            basedate = [x[1] for x in baseset]
+            lastindex = 0
 
-            print(pt_base, max_base)
-            nextdate = list(map(lambda x : x[1], singlenext))
-            for i in range(pt_base, max_base):
-                td = singlebase[i][1]
-                try:
-                    ind = nextdate.index(td)
-                    if singlebase[i][6] > singlenext[ind][6]:
-                        if i != max_base - 1:
-                            continue
-                    print('======>    ',singlebase[i][6],singlenext[ind][6])
-                except:
-                    if i != max_base-1:
-                        continue
-                
-                if i+1 < max_base and ind+1 < max_next:
-                    # main contract changed to another contract
-                    lastdate = singlenext[ind+1][1]
-                    maincontract += singlebase[pt_base:i+1]
+            if lastdate != None:
+                lastindex = [index for index,x in enumerate(basedate) if x[1] > lastdate]
+                if len(lastindex) == 0:
+                    continue
                 else:
-                    # main contract not finished, need jump out the whole outer loop
-                    # here is one little concern:
-                    #   if the next contract won't be the main, and the next next one will be the main, then
-                    #   in this case, the process will be collapsed
-                    maincontract += singlebase[pt_base:]
-                    singlenext = -1
-                break
+                    lastindex = lastindex[0]
+                    baseset = baseset[lastindex:]
+                    if tind+1 == len(tablelist):
+                        maincontract += baseset
+                    lastdate == None
+            
+        else:
+            flag = True
+            while flag:
+                indbase = 0
+                indnext = 0
+                maxbase = len(baseset)
+                maxnext = len(nextset)
+                if baseset[indbase][1] < nextset[indnext][1]:
+                    indbase += 1
+                elif baseset[indbase][1] == nextset[indnext][1]:
+                    if baseset[indbase][6] >= nextset[indnext][6]:
+                        indbase += 1
+                        indnext += 1
+                    else:
+                        maincontract += baseset[:indbase]
+                        baseset = nextset[indnext:]
+                        flag = False
+                else:
+                    indnext += 1
+
+                if flag and indbase == maxbase:
+                    maincontract += baseset
+                    if indnext < maxnext:
+                        baseset = nextset[indnext:]
+                    elif indnext == maxnext:
+                        lastdate = baseset[-1][1]
+                        baseset = None
+                    flag = False
+                elif flag and indnext == maxnext:
+                    if tind+1 == len(tablelist):
+                        maincontract += baseset
+                    flag = False
+
+
 
     print("step last: insert data")
     if len(maincontract) > 0:
