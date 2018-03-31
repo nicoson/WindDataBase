@@ -117,11 +117,9 @@ def generateMainContract(symbol, db, db_mc):
                     indall += 1
                 elif indexList[indall][0] == data[indnew][0]:
                     if indexList[indall][1] == None:
-                        indexList[indall][1] == indexList[indall-1][1]
+                        indexList[indall][1] = indexList[indall-1][1]
                     if data[indnew][1] == None:
-                        data[indnew][1] == data[indnew-1][1]
-                    print(indexList[indall])
-                    print(data[indnew])
+                        data[indnew][1] = data[indnew-1][1]
 
                     w1 = 2/3 * indexList[indall][2] + 1/3 * indexList[indall][4]
                     w2 = 2/3 * data[indnew][2] + 1/3 * data[indnew][4]
