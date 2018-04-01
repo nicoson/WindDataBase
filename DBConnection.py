@@ -298,7 +298,7 @@ class DBConnect:
 			stock_code varchar(16) NOT NULL UNIQUE KEY COMMENT '代码',
 			current_maincode varchar(20) NOT NULL COMMENT '当前主力合约',
 			last_trade_day date NOT NULL DEFAULT '1990-01-01' COMMENT '最新日期',
-			updated_date date NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新日期'
+			updated_date datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新日期'
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8"""
 
 		self.cursor.execute(sql)
@@ -365,7 +365,7 @@ class DBConnect:
 
 	def updateMainContract(self, symbol, data):
 		cmaincode = data[-1][2]
-		lastTradeDate = str(data[-1][0])
+		lastTradeDate = str(data[-1][1])
 		data = list(map(lambda datum : tuple([str(datum[0])] + [str(datum[1])] + datum[2:]), data))
 		data = list(map(str, data))
 

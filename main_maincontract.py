@@ -113,6 +113,7 @@ def generateMainContract(symbol, db, db_mc):
             if lastdate != None:
                 lastindex = [index for index,x in enumerate(baseset) if x[1] > lastdate]
                 if len(lastindex) == 0:
+                    baseset = None  # if not found then reset the baseset as None
                     continue
                 else:
                     lastindex = lastindex[0]
