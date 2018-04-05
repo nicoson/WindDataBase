@@ -74,15 +74,19 @@ def filterSymbols(symbols, db):
     updateloglist = [list(data) for data in db.getUpdatelogList()]
     fixlist = []
     for sym in symbols:
-        temp = list(filter(lambda x:x[0] == sym, updateloglist))
+        temp = list(filter(lambda x:x[0] == translate(sym), updateloglist))
         if len(temp) == 0:
             fixlist += [sym]
         else:
-            yd = re.search(r'\d{4}',sym).group()
-            tempdate = db.getLastDate(sym)
-            yddata = str(tempdate)[2:] + str(tempdate.month if tempdate.month >= 10 else '0' + str(tempdate.month))
-            if yd != yddata:
+            tempdate = db.getLastDate(sym)[0]
+            if tempdate == None:
                 fixlist += [sym]
+                print('no data: ', sym)
+            # else:
+            #     yd = re.search(r'\d{4}',sym).group()
+            #     yddata = str(tempdate)[2:] + str(tempdate.month if tempdate.month >= 10 else '0' + str(tempdate.month))
+            #     if yd != yddata:
+            #         fixlist += [sym]
         print(temp)
 
     print(fixlist)

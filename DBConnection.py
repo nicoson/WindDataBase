@@ -203,7 +203,7 @@ class DBConnect:
 			return None
 
 	def getLastDate(self, symbol):
-		sql = "SELECT max(last_trade_day) FROM '" + symbol
+		sql = "SELECT max(last_trade_day) FROM `" + symbol + "`"
 		# print(sql)
 		try:
 			self.cursor.execute(sql)
