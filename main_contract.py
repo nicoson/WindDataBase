@@ -75,11 +75,14 @@ def filterSymbols(symbols, db):
     fixlist = []
     for sym in symbols:
         temp = list(filter(lambda x:x[0] == translate(sym), updateloglist))
-        if len(temp) == 0:
+        if re.match(r'[a-zA-Z]{1,3}\d{3}\.\w{2,3}', sym) == None:
+            continue
+        elif len(temp) == 0:
             fixlist += [sym]
+            print('missing data: ', sym)
         else:
-            tempdate = db.getLastDate(sym)[0]
-            if tempdate == None:
+            tempdate = db.getLastDate(sym)
+            if tempdate == None or tempdate[0] == None::
                 fixlist += [sym]
                 print('no data: ', sym)
             # else:
