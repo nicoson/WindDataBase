@@ -32,7 +32,7 @@ def main(isHistory = False, isfix = False):
     if isfix:
         symbols = filterSymbols(symbols, db)
 
-    symbols = symbols[0:3]    # test case
+    # symbols = symbols[0:3]    # test case
 
     # create tables for new category
     db.createUpdateLogTable()

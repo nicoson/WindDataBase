@@ -21,7 +21,7 @@ def main():
     # get category list
     symbols = ws.getCateFutureCodes()    # for history data codes
     symbols = list(filter(lambda sym:sym.find('(') == -1, symbols))
-    symbols = symbols[0:3]    # test case
+    # symbols = symbols[0:3]    # test case
 
     # create tables for new category
     db = DBConnect("localhost","root","root","future_l2")   # database for level 2 data for future
