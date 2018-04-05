@@ -8,9 +8,9 @@
 # ==============================================================================
 
 import argparse
-# from WindPy import *
+from WindPy import *
 from DBConnection import DBConnect
-# from WindConnection import *
+from WindConnection import *
 import datetime,time,re
 
 def currentTime():
@@ -32,6 +32,7 @@ def main(isHistory = False, isfix = False):
 
     if isfix:
         symbols = filterSymbols(symbols, db)
+        return
 
     # create tables for new category
     db.createUpdateLogTable()
@@ -70,8 +71,21 @@ def translate(symbol):
     return symbol
 
 def filterSymbols(symbols, db):
-    updateloglist = db.getUpdatelogList()
-    print()
+    updateloglist = [list(data) for data in db.getUpdatelogList()]
+    fixlist = []
+    for sym in symbols:
+        temp = list(filter(lambda x:x[0] == sym, updateloglist))
+        if len(temp) == 0:
+            fixlist += [sym]
+        else:
+            yd = re.search(r'\d{4}',sym).group()
+            tempdate = db.getLastDate(sym)
+            yddata = str(tempdate)[2:] + str(tempdate.month if tempdate.month >= 10 else '0' + str(tempdate.month))
+            if yd != yddata:
+                fixlist += [sym]
+        print(temp)
+
+    print(fixlist)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='choose to load history/current data')

@@ -191,7 +191,7 @@ class DBConnect:
 			print(e)
 			return None
 
-	def getUpdatelogList(self, symbol):
+	def getUpdatelogList(self):
 		sql = "SELECT * FROM updatelog"
 		try:
 			self.cursor.execute(sql)
@@ -199,6 +199,18 @@ class DBConnect:
 			return result
 		except Exception as e:
 			print("XXXXXXXXXXXXX	getUpdatelogList issue ")
+			print(e)
+			return None
+
+	def getLastDate(self, symbol):
+		sql = "SELECT max(last_trade_day) FROM '" + symbol
+		# print(sql)
+		try:
+			self.cursor.execute(sql)
+			result = self.cursor.fetchone()
+			return result
+		except Exception as e:
+			print("XXXXXXXXXXXXX	getLastDate issue for stock: ", symbol)
 			print(e)
 			return None
 
@@ -236,7 +248,7 @@ class DBConnect:
 		try:
 			self.cursor.execute(sql)
 			self.db.commit()
-			self.updateLogTable(symbol, datetime.datetime.now().strftime("%Y-%m-%d"))
+			self.updateLogTable(symbol, data[-1][1].strftime("%Y-%m-%d"))
 		except Exception as e:
 			print("XXXXXXXXXXXXX	insertStockData issue for stock: ", symbol)
 
@@ -280,7 +292,7 @@ class DBConnect:
 		try:
 			self.cursor.execute(sql)
 			self.db.commit()
-			self.updateLogTable(symbol, datetime.datetime.now().strftime("%Y-%m-%d"))
+			self.updateLogTable(symbol, data[-1][1].strftime("%Y-%m-%d"))
 
 		except Exception as e:
 			print("XXXXXXXXXXXXX	insertFutureData issue for stock: ", symbol)
