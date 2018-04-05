@@ -4,29 +4,36 @@
 #
 # sample:
 # > python3 main_contract.py --history=true
+# > python3 main_contract.py --fixdata=true
 # ==============================================================================
 
 import argparse
-from WindPy import *
+# from WindPy import *
 from DBConnection import DBConnect
-from WindConnection import *
+# from WindConnection import *
 import datetime,time,re
 
 def currentTime():
     return datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-def main(isHistory = False):
+def main(isHistory = False, isfix = False):
+    # connect Wind service
     ws = WindStock()
+
+    # connect Database
+    db = DBConnect("localhost","root","root","future_l2")   # database for level 2 data for future
+
     # get category list
-    if isHistory:
+    if isHistory or isfix:
         symbols = ws.getFutureCodesWindAll()    # for history data codes
     else:
         symbols = ws.getFutureCodesWindOnMarket()    # for current trading data codes
     # symbols = symbols[0:3]    # test case
 
+    if isfix:
+        symbols = filterSymbols(symbols, db)
+
     # create tables for new category
-    # db = DBConnect("localhost","root","root","future")    # old database for future data
-    db = DBConnect("localhost","root","root","future_l2")   # database for level 2 data for future
     db.createUpdateLogTable()
     db.createFutureTables(list(map(translate, symbols)))
 
@@ -62,9 +69,13 @@ def translate(symbol):
         symbol = symbol[:ind-3] + '1' + symbol[ind-3:]
     return symbol
 
+def filterSymbols(symbols, db):
+    updateloglist = db.getUpdatelogList()
+    print()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='choose to load history/current data')
     parser.add_argument('--history', type=str, default = 'false')
+    parser.add_argument('--fixdata', type=str, default = 'false')
     args = parser.parse_args()
-    main(args.history == 'true')
+    main(args.history == 'true', args.fixdata == 'true')

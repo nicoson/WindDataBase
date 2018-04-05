@@ -191,6 +191,17 @@ class DBConnect:
 			print(e)
 			return None
 
+	def getUpdatelogList(self, symbol):
+		sql = "SELECT * FROM updatelog"
+		try:
+			self.cursor.execute(sql)
+			result = self.cursor.fetchall()
+			return result
+		except Exception as e:
+			print("XXXXXXXXXXXXX	getUpdatelogList issue ")
+			print(e)
+			return None
+
 	# for stock
 	def insertStockData(self, symbol, data):
 		# handle date value
