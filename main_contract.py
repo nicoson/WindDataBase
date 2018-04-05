@@ -28,11 +28,11 @@ def main(isHistory = False, isfix = False):
         symbols = ws.getFutureCodesWindAll()    # for history data codes
     else:
         symbols = ws.getFutureCodesWindOnMarket()    # for current trading data codes
-    # symbols = symbols[0:3]    # test case
 
     if isfix:
         symbols = filterSymbols(symbols, db)
-        return
+
+    symbols = symbols[0:3]    # test case
 
     # create tables for new category
     db.createUpdateLogTable()
@@ -75,7 +75,7 @@ def filterSymbols(symbols, db):
     fixlist = []
     for sym in symbols:
         temp = list(filter(lambda x:x[0] == translate(sym), updateloglist))
-        if re.match(r'[a-zA-Z]{1,3}\d{3}\.\w{2,3}', sym) == None:
+        if re.match(r'[a-zA-Z]{1,3}\d{3,4}\.\w{2,3}', sym) == None:
             continue
         elif len(temp) == 0:
             fixlist += [sym]
@@ -91,7 +91,8 @@ def filterSymbols(symbols, db):
             #     if yd != yddata:
             #         fixlist += [sym]
         
-    print(fixlist)
+    print('Number of tables to be complement: ', len(fixlist))
+    return fixlist
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='choose to load history/current data')
