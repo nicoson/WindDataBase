@@ -248,7 +248,7 @@ class DBConnect:
 		try:
 			self.cursor.execute(sql)
 			self.db.commit()
-			self.updateLogTable(symbol, data[-1][1].strftime("%Y-%m-%d"))
+			self.updateLogTable(symbol, datetime.datetime.combine(data[-1][1],datetime.datetime.min.time()).strftime("%Y-%m-%d"))
 		except Exception as e:
 			print("XXXXXXXXXXXXX	insertStockData issue for stock: ", symbol)
 
@@ -292,7 +292,7 @@ class DBConnect:
 		try:
 			self.cursor.execute(sql)
 			self.db.commit()
-			self.updateLogTable(symbol, data[-1][0].strftime("%Y-%m-%d"))
+			self.updateLogTable(symbol, datetime.datetime.combine(data[-1][1],datetime.datetime.min.time()).strftime("%Y-%m-%d"))
 
 		except Exception as e:
 			print("XXXXXXXXXXXXX	insertFutureData issue for stock: ", symbol)
