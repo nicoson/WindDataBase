@@ -81,8 +81,8 @@ def filterSymbols(symbols, db):
             fixlist += [sym]
             print('missing data: ', sym)
         else:
-            tempdate = db.getLastDate(sym)
-            if tempdate == None or tempdate[0] == None::
+            tempdate = db.getLastDate(translate(sym))
+            if tempdate == None or tempdate[0] == None:
                 fixlist += [sym]
                 print('no data: ', sym)
             # else:
@@ -90,8 +90,7 @@ def filterSymbols(symbols, db):
             #     yddata = str(tempdate)[2:] + str(tempdate.month if tempdate.month >= 10 else '0' + str(tempdate.month))
             #     if yd != yddata:
             #         fixlist += [sym]
-        print(temp)
-
+        
     print(fixlist)
 
 if __name__ == "__main__":
