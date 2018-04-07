@@ -22,11 +22,7 @@ def main():
     db_mc = DBConnect("localhost","root","root","maincontract")   # database for main contract
 
     # get category list
-    # symbols = ws.getCateFutureCodes()    # for history data codes
-    # symbols = list(filter(lambda sym:sym.find('(') == -1, symbols))
-    symbols = db.getUpdatelogList()
-
-    return
+    symbols = getMainContractList(db)
     # symbols = symbols[0:3]    # test case
 
     # create tables for new category
@@ -41,6 +37,13 @@ def main():
     # job finished, close the db connection
     db.destroy()
     db_mc.destroy()
+
+def getMainContractList(db):
+    symbols = db.getUpdatelogList()
+    symbols = [sym[0] for sym in symbols]
+    symbols = list(set(list(map(lambda x: re.sub(r'\d{3,4}[a-zA-Z.-]+','',x), symbols))))
+    symbols.sort()
+    return symbols
 
 def sortTableList(tlist):
     tlist.sort()

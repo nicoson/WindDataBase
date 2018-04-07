@@ -67,7 +67,7 @@ def main(isHistory = False, isfix = False):
 def translate(symbol):
     if re.match(r'[a-zA-Z]{1,3}\d{3}\.\w{2,3}', symbol) != None:
         ind = symbol.find('.')
-        symbol = symbol[:ind-3] + '1' + symbol[ind-3:]
+        symbol = symbol[:ind-3] + str(datetime.date.today().year)[2] + symbol[ind-3:]
     return symbol
 
 def filterSymbols(symbols, db):
