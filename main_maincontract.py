@@ -18,14 +18,18 @@ def currentTime():
 # main process
 def main():
     ws = WindStock()
+    db = DBConnect("localhost","root","root","future_l2")   # database for level 2 data for future
+    db_mc = DBConnect("localhost","root","root","maincontract")   # database for main contract
+
     # get category list
-    symbols = ws.getCateFutureCodes()    # for history data codes
-    symbols = list(filter(lambda sym:sym.find('(') == -1, symbols))
+    # symbols = ws.getCateFutureCodes()    # for history data codes
+    # symbols = list(filter(lambda sym:sym.find('(') == -1, symbols))
+    symbols = db.getUpdatelogList()
+
+    return
     # symbols = symbols[0:3]    # test case
 
     # create tables for new category
-    db = DBConnect("localhost","root","root","future_l2")   # database for level 2 data for future
-    db_mc = DBConnect("localhost","root","root","maincontract")   # database for main contract
     db_mc.createUpdateLogTable4MainContract()
     db_mc.createMainContractTables(symbols)
 
