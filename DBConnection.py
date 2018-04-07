@@ -445,6 +445,7 @@ class DBConnect:
 			volume double DEFAULT NULL COMMENT '成交量',
 			amt double DEFAULT NULL COMMENT '成交金额',
 			oi double DEFAULT NULL COMMENT '持仓量',
+			contractmultiplier double DEFAULT NULL COMMENT '合约乘数',
 			created_date datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建日期',
 			updated_date datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新日期'
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8"""

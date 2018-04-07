@@ -53,8 +53,8 @@ def sortTableList(tlist):
 def getConvertTable(symbol, db):
     data = db.getContractDataBySymbol(symbol)
     if len(data) > 0:
-        # [date, price, volumn, turnover amount, open interest]
-        data = list(map(lambda x : [x[1]] + [x[5]] + [x[6] if x[6] != None else 0] + [x[7] if x[7] != None else 0] + [x[8] if x[8] != None else 0], data))
+        # [date, price, volumn, turnover amount, open interest, contractmultiplier]
+        data = list(map(lambda x : [x[1]] + [x[5]] + [x[6] if x[6] != None else 0] + [x[7] if x[7] != None else 0] + [x[8] if x[8] != None else 0] + [x[12]], data))
         datum = 0
         for i in data:  # auto fill close price
             if i[1] == None:
@@ -116,6 +116,7 @@ def generateindex(symbol, db, db_mc):
 
                     if (w1 + w2) != 0:
                         indexList[indall][1] = indexList[indall][1] * w1 / (w1 + w2) + data[indnew][1] * w2 / (w1 + w2)   # setup price
+                        
                     indexList[indall][2] = indexList[indall][2] + data[indnew][2]
                     indexList[indall][3] = indexList[indall][3] + data[indnew][3]
                     indexList[indall][4] = indexList[indall][4] + data[indnew][4]
