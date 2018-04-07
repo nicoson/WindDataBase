@@ -41,7 +41,7 @@ def main():
 def getMainContractList(db):
     symbols = db.getUpdatelogList()
     symbols = [sym[0] for sym in symbols]
-    symbols = list(set(list(map(lambda x: re.sub(r'\d{3,4}[a-zA-Z.-]+','',x), symbols))))
+    symbols = list(set(list(map(lambda x: re.sub(r'\d{3,4}[a-zA-Z-]*','',x), symbols))))
     symbols.sort()
     return symbols
 
