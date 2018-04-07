@@ -467,7 +467,7 @@ class DBConnect:
 
 		sql = ','.join(data)
 		sql = "INSERT INTO `" + symbol + """` (last_trade_day,
-		close,volume,amt,oi) VALUES""" + sql
+		close,volume,amt,oi,contractmultiplier) VALUES""" + sql
 		sql = sql.replace("'None'", 'null')	# for date column
 		sql = sql.replace('None', 'null')
 
