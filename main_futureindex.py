@@ -19,14 +19,16 @@ def currentTime():
 # main process
 def main():
     ws = WindStock()
+    db = DBConnect("localhost","root","root","future_l2")   # database for level 2 data for future
+    db_mc = DBConnect("localhost","root","root","securityindex")   # database for main contract
+    
     # get category list
-    symbols = ws.getCateFutureCodes()    # for history data codes
-    symbols = list(filter(lambda sym:sym.find('(') == -1, symbols))
+    # symbols = ws.getCateFutureCodes()    # for history data codes
+    # symbols = list(filter(lambda sym:sym.find('(') == -1, symbols))
+    symbols = getMainContractList(db)
     # symbols = symbols[0:3]    # test case
 
     # create tables for new category
-    db = DBConnect("localhost","root","root","future_l2")   # database for level 2 data for future
-    db_mc = DBConnect("localhost","root","root","securityindex")   # database for main contract
     #db_mc.createUpdateLogTable4MainContract()
     db_mc.createContractIndexTables(symbols)
 
@@ -38,6 +40,13 @@ def main():
     # job finished, close the db connection
     db.destroy()
     db_mc.destroy()
+
+def getMainContractList(db):
+    symbols = db.getUpdatelogList()
+    symbols = [sym[0] for sym in symbols]
+    symbols = list(set(list(map(lambda x: re.sub(r'\d{3,4}[a-zA-Z-]*','',x), symbols))))
+    symbols.sort()
+    return symbols
 
 def sortTableList(tlist):
     tlist.sort()
@@ -116,7 +125,7 @@ def generateindex(symbol, db, db_mc):
 
                     if (w1 + w2) != 0:
                         indexList[indall][1] = indexList[indall][1] * w1 / (w1 + w2) + data[indnew][1] * w2 / (w1 + w2)   # setup price
-                        
+
                     indexList[indall][2] = indexList[indall][2] + data[indnew][2]
                     indexList[indall][3] = indexList[indall][3] + data[indnew][3]
                     indexList[indall][4] = indexList[indall][4] + data[indnew][4]
